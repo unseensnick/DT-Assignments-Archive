@@ -22,8 +22,9 @@
                 align-items: center;
                 padding: 20px;
                 background-color: #8b4513;
-                color: #fff;
+                color: #ffd700;
                 border-bottom: 5px solid #ffd700;
+                margin-bottom: 20px;
             }
 
             nav {
@@ -47,17 +48,31 @@
             main {
                 flex: 1;
                 display: flex;
-                flex-wrap: wrap;
+                flex-direction: column;
                 gap: 20px;
-                padding: 20px;
+                margin-top: 20px;
             }
 
-            section {
-                flex: 1 1 300px;
-                display: flex;
-                flex-direction: column;
-                padding: 15px;
-                border: 1px solid #8b4513;
+            .special-announcement {
+                background-color: #f8e1a5;
+                color: #8b4513;
+                border: 5px solid #8b4513;
+                padding: 25px;
+                border-radius: 10px;
+                text-align: center;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            }
+
+            .special-announcement h2 {
+                font-size: 1.8em;
+                margin-bottom: 10px;
+                color: #682d63;
+                text-shadow: 1px 1px 3px #ffd700;
+            }
+
+            .special-announcement p {
+                font-size: 1.2em;
+                line-height: 1.6;
             }
 
             .special-item {
@@ -77,32 +92,54 @@
                 margin: 20px 0;
             }
 
-            .potion-of-the-day {
-                background-color: #f8e1a1;
-                color: #33281e; /* Dark brown text for readability */
-                font-family: Arial, sans-serif; /* Consistent font family */
+            .special-brews {
+                display: flex;
+                flex-wrap: wrap; /* Grid layout for larger screens */
+                gap: 20px;
                 padding: 20px;
-                border: 3px solid #8b4513; /* Matching brown border */
+                border: 3px solid #8b4513;
                 border-radius: 12px;
-                text-align: center;
+                background-color: #f8e1a1;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
                 margin: 30px auto;
                 width: 80%;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+                justify-content: space-evenly;
             }
 
-            .potion-of-the-day h2 {
-                font-size: 2em;
-                color: #8b4513; /* Dark brown color for the heading */
+            .brew-item {
+                flex: 1 1 calc(33% - 20px); /* Grid-based size */
+                background-color: rgba(255, 223, 128, 0.8);
+                padding: 15px;
+                border: 2px solid #8b4513;
+                border-radius: 8px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+                text-align: center;
+            }
+
+            .brew-item h3 {
+                font-size: 1.5em;
                 margin-bottom: 10px;
-                text-shadow: 1px 1px 2px #ffd700; /* Light shadow for effect */
+                color: #8b4513;
+                text-shadow: 1px 1px 2px #ffd700;
             }
 
-            .potion-of-the-day p {
-                font-size: 1.2em;
+            .brew-item p {
+                font-size: 1.1em;
                 line-height: 1.6;
+                color: #33281e;
             }
 
-            #special-brew {
+            .potion-of-the-day {
+                background-color: #f8e1a1;
+                color: #33281e;
+                padding: 20px;
+                border: 3px solid #8b4513;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+                border-radius: 12px;
+                flex: 1 1 100%;
+            }
+
+            #daily-special {
                 color: #ffd700;
                 background-color: #8b4513;
                 padding: 2px 5px;
@@ -111,27 +148,33 @@
                 text-shadow: 1px 1px 3px #000000;
             }
 
-            .special-announcement {
-                background-color: #f8e1a5;
-                color: #8b4513;
-                border: 5px solid #8b4513;
-                padding: 25px;
-                border-radius: 10px;
-                margin: 20px 0;
-                text-align: center;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-            }
+            @media (max-width: 768px) {
+                .special-brews {
+                    flex-wrap: nowrap; /* Prevent wrapping */
+                    overflow-x: auto; /* Enable horizontal scrolling */
+                    gap: 10px;
+                    scroll-snap-type: x mandatory;
+                    scroll-behavior: smooth;
+                }
 
-            .special-announcement h2 {
-                font-size: 1.8em;
-                margin-bottom: 10px;
-                color: #682d63;
-                text-shadow: 1px 1px 3px #ffd700;
-            }
+                /* Hide scrollbar */
+                .special-brews::-webkit-scrollbar {
+                    display: none; /* Hide scrollbar in webkit-based browsers */
+                }
 
-            .special-announcement p {
-                font-size: 1.2em;
-                line-height: 1.6;
+                .special-brews {
+                    -ms-overflow-style: none; /* Hide scrollbar in Internet Explorer */
+                    scrollbar-width: none; /* Hide scrollbar in Firefox */
+                }
+
+                .brew-item {
+                    flex: 0 0 80%; /* Take 80% of the viewport width */
+                    scroll-snap-align: center; /* Align items at the center */
+                }
+
+                .potion-of-the-day {
+                    flex: 0 0 90%; /* Full-width Potion of the Day for scrolling */
+                }
             }
 
             footer {
@@ -168,14 +211,63 @@
                 bites, and spirited company, this is the place where legends—and
                 friendships—are forged.
             </p>
-            <section class="potion-of-the-day">
-                <h2>Potion of the Day</h2>
-                <p>
-                    Today's special brew is the
-                    <b id="special-brew">"Elixir of Eternal Wit"</b>, a
-                    sparkling blend of citrus and enchanted herbs to sharpen
-                    your mind and tickle your taste buds. Don’t miss it!
-                </p>
+            <section class="special-brews">
+                <div class="brew-item potion-of-the-day">
+                    <h3>Potion of the Day</h3>
+                    <p>
+                        Today's special brew is the
+                        <b id="daily-special">"Elixir of Eternal Wit"</b>, a
+                        sparkling blend of citrus and enchanted herbs to sharpen
+                        your mind and tickle your taste buds. Don’t miss it!
+                    </p>
+                </div>
+                <div class="brew-item">
+                    <h3>Dragon’s Breath Ale</h3>
+                    <p>
+                        A fiery amber ale with hints of chili and smoked malt,
+                        brewed to ignite your adventurous spirit. Best enjoyed
+                        with a hearty roast.
+                    </p>
+                    <p><strong>Flavor Notes:</strong> Smoky, spicy, bold.</p>
+                </div>
+                <div class="brew-item">
+                    <h3>Pixie Dust Potion</h3>
+                    <p>
+                        A glittery, lavender-infused mead with a touch of honey
+                        and citrus. Perfect for those seeking a magical evening.
+                    </p>
+                    <p>
+                        <strong>Flavor Notes:</strong> Sweet, floral,
+                        effervescent.
+                    </p>
+                </div>
+                <div class="brew-item">
+                    <h3>Ogre’s Stout</h3>
+                    <p>
+                        A dark and hearty brew with roasted coffee and chocolate
+                        undertones, favored by the tavern’s burliest patrons.
+                    </p>
+                    <p><strong>Flavor Notes:</strong> Rich, creamy, robust.</p>
+                </div>
+                <div class="brew-item">
+                    <h3>Elven Forest Brew</h3>
+                    <p>
+                        A refreshing green tea lager with subtle hints of mint
+                        and wild herbs, inspired by lush elven forests.
+                    </p>
+                    <p><strong>Flavor Notes:</strong> Crisp, herbal, light.</p>
+                </div>
+                <div class="brew-item">
+                    <h3>Goblin’s Gold</h3>
+                    <p>
+                        A golden wheat beer with a splash of orange and
+                        coriander, rumored to bring good luck with every sip.
+                    </p>
+                    <p>
+                        <strong>Flavor Notes:</strong> Citrusy, smooth,
+                        refreshing.
+                    </p>
+                </div>
             </section>
         </main>
         <footer>&copy; The Tipsy Troll Tavern. All rights reserved.</footer>
