@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The Tipsy Troll</title>
+        <style>
+            body {
+                font-family: "Georgia", serif;
+                background-color: #f0e6d2; /* A warm, parchment-like color */
+                color: #33281e; /* Dark brown for main text */
+            }
+
+            header {
+                background-color: #8b4513; /* Saddle brown for a wooden feel */
+                color: #ffd700; /* Gold color for header text */
+                font-family: "Copperplate", fantasy;
+            }
+
+            h1 {
+                font-size: 2.5em;
+                text-shadow: 2px 2px 4px #000000;
+            }
+
+            nav a {
+                color: #ffd700;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            main {
+                background-color: rgba(
+                    255,
+                    255,
+                    255,
+                    0.7
+                ); /* Semi-transparent white */
+            }
+
+            h2 {
+                color: #8b4513;
+                font-size: 1.8em;
+                border-bottom: 2px solid #8b4513;
+            }
+
+            button {
+                background-color: #4caf50; /* Green */
+                color: white;
+                font-weight: bold;
+            }
+
+            footer {
+                background-color: #8b4513;
+                color: #ffd700;
+                font-style: italic;
+            }
+
+            .special-item {
+                background-color: rgba(
+                    255,
+                    223,
+                    128,
+                    0.8
+                ); /* Semi-transparent soft gold */
+                color: #33281e; /* Dark brown text for readability */
+                font-size: 1.2em;
+                padding: 15px; /* Consistent spacing */
+                border: 2px solid #8b4513; /* Solid brown border for a clean look */
+                border-radius: 8px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Slightly darker shadow */
+                text-align: center;
+                margin: 20px 0;
+            }
+
+            .potion-of-the-day {
+                background-color: #682d63; /* Deep purple for a magical feel */
+                color: #ffd1dc; /* Soft pink for text, contrasting with purple */
+                font-family: "Brush Script MT", cursive; /* A whimsical, handwritten font */
+                padding: 20px;
+                border: 3px solid #ffd700; /* Gold border to tie in with page's theme */
+                border-radius: 12px;
+                text-align: center;
+                margin: 30px auto;
+                width: 80%; /* Keep it narrower than the full page */
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+            }
+
+            .potion-of-the-day h2 {
+                font-size: 2em;
+                color: #ffe4b5; /* Lighter shade of gold for the heading */
+                text-shadow: 2px 2px 4px #000000; /* Magical glow effect */
+                margin-bottom: 10px;
+            }
+
+            .potion-of-the-day p {
+                font-size: 1.2em;
+                line-height: 1.6; /* Improve readability */
+            }
+
+            #special-brew {
+                color: #ffd700; /* Gold color to match the theme */
+                background-color: #8b4513; /* Dark brown background for contrast */
+                padding: 2px 5px;
+                border-radius: 5px;
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+                text-shadow: 1px 1px 3px #000000; /* Dark shadow for a glowing effect */
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Welcome to The Tipsy Troll</h1>
+            <nav>
+                <a href="#menu">Menu</a> <a href="#events">Events</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </header>
+        <main>
+            <p class="special-item">
+                Step into The Tipsy Troll, a cozy haven where laughter flows as
+                freely as the craft brews. With its enchanted ambiance, hearty
+                bites, and spirited company, this is the place where legends—and
+                friendships—are forged.
+            </p>
+            <section class="potion-of-the-day">
+                <h2>Potion of the Day</h2>
+                <p>
+                    Today's special brew is the
+                    <b id="special-brew">"Elixir of Eternal Wit"</b>, a
+                    sparkling blend of citrus and enchanted herbs to sharpen
+                    your mind and tickle your taste buds. Don’t miss it!
+                </p>
+            </section>
+        </main>
+        <footer></footer>
+    </body>
+</html>
