@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .layout {
+                display: flex;
+            }
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .content-item {
+                flex: 1 1 200px; /* Makes each item take up at least 200px */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layout">
+            <div class="sidebar">Sidebar</div>
+            <div class="content">
+                <div class="content-item">
+                    Item 1 Lorem ipsum dolor, sit amet consectetur adipisicing
+                    elit. Porro sunt officiis, quo veritatis accusantium
+                    voluptate mollitia fugiat sapiente! Laborum neque enim
+                    aliquam optio voluptatum explicabo at quaerat accusantium
+                    molestias soluta! lo
+                </div>
+                <div class="content-item">Item 2</div>
+                <div class="content-item">Item 3</div>
+            </div>
+        </div>
+    </body>
+</html>
