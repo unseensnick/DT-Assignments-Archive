@@ -54,11 +54,11 @@ function multiply(a, b) {
 console.log(a, b); 
 */
 
-const multiply = (a, b) => console.log(a * b);
+const multiply = (a, b) => a * b;
 
 console.log("\n---Testing Arrow Function---");
-multiply(2, 3);
-multiply(4, 5);
+console.log(multiply(2, 3));
+console.log(multiply(4, 5));
 
 ///// 5. Create a higher order function /////
 
@@ -69,6 +69,7 @@ function createMultiplier(multiplier) {
 }
 
 const double = createMultiplier(2);
+console.log("\n---Testing Higher order function---");
 console.log(double(3));
 
 ///// BONUS: Modify the function to log the result to the console directly /////
