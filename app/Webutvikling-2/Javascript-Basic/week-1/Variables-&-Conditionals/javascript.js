@@ -25,7 +25,7 @@ const når du definerer variablene.
 ******************************************************************************/
 
 // Skriv koden for oppgave 2 her
-let firstName = "John";
+const firstName = "John";
 let age = 18;
 let isAnAdult = age >= 18;
 let cars = ["Toyota", "BMW", "Tesla", "Ford"];
