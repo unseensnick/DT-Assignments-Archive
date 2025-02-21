@@ -1,28 +1,28 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCheck, Copy, Play } from "lucide-react";
+import { CheckCheck, Copy, Terminal } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Highlight, themes } from "prism-react-renderer";
 import React, { useEffect, useState } from "react";
 
-// Customizable settings
 const ANIMATION_SETTINGS = {
-    duration: 500, // milliseconds
+    duration: 500,
     easing: "ease-in-out",
-    consoleWidth: 40, // percentage (%)
+    consoleWidth: 40,
 };
 
 const CodePlayground = ({
     title = "Code Playground",
-    code,
-    language = "javascript",
+    files,
     animationDuration = ANIMATION_SETTINGS.duration,
     animationEasing = ANIMATION_SETTINGS.easing,
     consoleWidth = ANIMATION_SETTINGS.consoleWidth,
 }) => {
+    const [activeTab, setActiveTab] = useState(0);
     const [output, setOutput] = useState([]);
     const [isCopied, setIsCopied] = useState(false);
     const [mounted, setMounted] = useState(false);
+    const [showConsole, setShowConsole] = useState(false);
     const { theme } = useTheme();
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const CodePlayground = ({
     }, []);
 
     const copyCode = async () => {
-        await navigator.clipboard.writeText(code);
+        await navigator.clipboard.writeText(files[activeTab].content);
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);
     };
@@ -49,19 +49,33 @@ const CodePlayground = ({
                             ? JSON.stringify(arg, null, 2)
                             : String(arg)
                     )
-                    .join(" "),
+                    .join(" ")
+                    .replace(/\\n/g, "\n"),
             });
             setOutput([...outputs]);
             originalLog.apply(console, args);
         };
 
         try {
-            const result = new Function(code)();
-            if (result !== undefined) {
+            const currentFile = files[activeTab];
+            if (currentFile.language === "html") {
                 outputs.push({
-                    type: "result",
-                    content: String(result),
+                    type: "html",
+                    content: currentFile.content,
                 });
+            } else if (currentFile.language === "css") {
+                outputs.push({
+                    type: "css",
+                    content: currentFile.content,
+                });
+            } else {
+                const result = new Function(currentFile.content)();
+                if (result !== undefined) {
+                    outputs.push({
+                        type: "result",
+                        content: String(result),
+                    });
+                }
             }
         } catch (error) {
             outputs.push({
@@ -71,6 +85,16 @@ const CodePlayground = ({
         } finally {
             console.log = originalLog;
             setOutput([...outputs]);
+            setShowConsole(true);
+        }
+    };
+
+    const toggleConsole = () => {
+        if (!showConsole) {
+            runCode();
+        } else {
+            setShowConsole(false);
+            setOutput([]);
         }
     };
 
@@ -80,17 +104,57 @@ const CodePlayground = ({
             : themes.github
         : themes.github;
 
-    // Calculate grid template columns based on console width
-    const gridTemplateColumns =
-        output.length > 0
-            ? `${100 - consoleWidth}% ${consoleWidth}%`
-            : "100% 0%";
+    const gridTemplateColumns = showConsole
+        ? `${100 - consoleWidth}% ${consoleWidth}%`
+        : "100% 0%";
+
+    const renderOutput = (item) => {
+        switch (item.type) {
+            case "html":
+                return (
+                    <div
+                        className="preview-frame"
+                        dangerouslySetInnerHTML={{ __html: item.content }}
+                    />
+                );
+            case "css":
+                return (
+                    <div className="preview-styles">
+                        <style>{item.content}</style>
+                        <div className="preview-container">CSS Preview</div>
+                    </div>
+                );
+            default:
+                return (
+                    <div
+                        className={`leading-relaxed whitespace-pre-wrap ${
+                            item.type === "error"
+                                ? "text-red-500"
+                                : item.type === "result"
+                                ? "text-green-500"
+                                : "text-foreground"
+                        }`}
+                    >
+                        <span className="text-muted-foreground mr-4">
+                            {item.type === "error"
+                                ? "❌"
+                                : item.type === "result"
+                                ? "✨"
+                                : ">"}
+                        </span>
+                        {item.content}
+                    </div>
+                );
+        }
+    };
 
     return (
         <div className="space-y-4">
             <Card className="overflow-hidden">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4">
-                    <CardTitle className="text-primary">{title}</CardTitle>
+                    <CardTitle className="text-accent-foreground capitalize">
+                        {title}
+                    </CardTitle>
                     <div className="flex gap-2">
                         <Button variant="ghost" size="sm" onClick={copyCode}>
                             {isCopied ? (
@@ -99,12 +163,34 @@ const CodePlayground = ({
                                 <Copy className="size-4" />
                             )}
                         </Button>
-                        <Button variant="ghost" size="sm" onClick={runCode}>
-                            <Play className="size-4" />
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={toggleConsole}
+                            className={showConsole ? "bg-muted" : ""}
+                        >
+                            <Terminal className="size-4" />
                         </Button>
                     </div>
                 </CardHeader>
                 <CardContent className="p-0">
+                    <div className="border-b">
+                        <div className="flex">
+                            {files.map((file, index) => (
+                                <button
+                                    key={file.name}
+                                    onClick={() => setActiveTab(index)}
+                                    className={`px-4 py-2 text-sm font-medium ${
+                                        activeTab === index
+                                            ? "border-b-2 border-primary text-primary"
+                                            : "text-muted-foreground hover:text-foreground"
+                                    }`}
+                                >
+                                    {file.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     <div
                         className="grid"
                         style={{
@@ -112,13 +198,12 @@ const CodePlayground = ({
                             transition: `all ${animationDuration}ms ${animationEasing}`,
                         }}
                     >
-                        {/* Code Editor */}
                         {mounted && (
                             <div className="w-full">
                                 <Highlight
                                     theme={currentTheme}
-                                    code={code}
-                                    language={language}
+                                    code={files[activeTab].content}
+                                    language={files[activeTab].language}
                                 >
                                     {({
                                         className,
@@ -160,14 +245,13 @@ const CodePlayground = ({
                             </div>
                         )}
 
-                        {/* Console Output */}
                         <div
                             className="border-l"
                             style={{
                                 transition: `all ${animationDuration}ms ${animationEasing}`,
-                                opacity: output.length > 0 ? 1 : 0,
+                                opacity: showConsole ? 1 : 0,
                                 transform: `translateX(${
-                                    output.length > 0 ? 0 : 100
+                                    showConsole ? 0 : 100
                                 }%)`,
                             }}
                         >
@@ -180,39 +264,18 @@ const CodePlayground = ({
                             >
                                 <div className="p-4">
                                     <h3 className="text-sm font-semibold mb-2 text-muted-foreground">
-                                        Console Output
+                                        Output
                                     </h3>
-                                    <div className="font-mono text-sm">
+                                    <div className="font-mono text-sm space-y-2">
                                         {output.length > 0 ? (
                                             output.map((item, index) => (
-                                                <div
-                                                    key={index}
-                                                    className={`leading-relaxed ${
-                                                        item.type === "error"
-                                                            ? "text-red-500"
-                                                            : item.type ===
-                                                              "result"
-                                                            ? "text-green-500"
-                                                            : "text-foreground"
-                                                    }`}
-                                                >
-                                                    <span className="text-muted-foreground mr-4">
-                                                        {index + 1}
-                                                    </span>
-                                                    {item.type === "error"
-                                                        ? "❌ "
-                                                        : item.type === "result"
-                                                        ? "✨ "
-                                                        : "> "}
-                                                    {item.content}
+                                                <div key={index}>
+                                                    {renderOutput(item)}
                                                 </div>
                                             ))
                                         ) : (
-                                            <div className="text-muted-foreground leading-relaxed">
-                                                <span className="text-muted-foreground mr-4">
-                                                    1
-                                                </span>
-                                                Run your code to see output here
+                                            <div className="text-muted-foreground">
+                                                Run code to see output
                                             </div>
                                         )}
                                     </div>

@@ -3,11 +3,11 @@ import { getCodeFiles } from "@/lib/script-utils";
 
 export default async function PlaygroundPage() {
     const codeFiles = await getCodeFiles("code", {
-        folders: ["variables-and-conditionals"],
+        folders: ["loops"],
     });
 
     const playgroundConfig = {
-        consoleWidth: 40,
+        consoleWidth: 30,
         animationDuration: 500,
         animationEasing: "ease-in-out",
     };

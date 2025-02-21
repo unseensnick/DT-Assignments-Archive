@@ -3,7 +3,7 @@ import { getCodeFiles } from "@/lib/script-utils";
 
 export default async function PlaygroundPage() {
     const codeFiles = await getCodeFiles("code", {
-        folders: ["variables-and-conditionals"],
+        folders: ["methods"],
     });
 
     const playgroundConfig = {
