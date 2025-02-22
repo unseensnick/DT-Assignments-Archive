@@ -8,7 +8,7 @@ const PlaygroundClient = ({
     playgroundConfig = {},
     className = "space-y-8",
 }) => {
-    const { consoleWidth, animationDuration, animationEasing } =
+    const { consoleWidth, animationDuration, animationEasing, enableRun } =
         playgroundConfig;
 
     const transformFilesForPlayground = (folderFiles) => {
@@ -44,6 +44,7 @@ const PlaygroundClient = ({
                         consoleWidth={consoleWidth}
                         animationDuration={animationDuration}
                         animationEasing={animationEasing}
+                        enableRun={enableRun}
                     />
                 </div>
             ))}

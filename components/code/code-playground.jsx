@@ -13,10 +13,14 @@ import React, { useEffect, useState } from "react";
 
 const DEFAULT_CONFIG = {
     title: "Code Playground",
-    previewHeight: 600,
     codeHeight: 600,
     consoleWidth: 40,
     isExpanded: false,
+    enableRun: {
+        html: true,
+        css: true,
+        javascript: true,
+    },
     animation: {
         duration: 500,
         easing: "ease-in-out",
@@ -26,10 +30,10 @@ const DEFAULT_CONFIG = {
 const CodePlayground = ({
     title = DEFAULT_CONFIG.title,
     files,
-    previewHeight = DEFAULT_CONFIG.previewHeight,
     codeHeight = DEFAULT_CONFIG.codeHeight,
     consoleWidth = DEFAULT_CONFIG.consoleWidth,
     initialExpanded = DEFAULT_CONFIG.isExpanded,
+    enableRun = DEFAULT_CONFIG.enableRun,
     animationDuration = DEFAULT_CONFIG.animation.duration,
     animationEasing = DEFAULT_CONFIG.animation.easing,
 }) => {
@@ -53,7 +57,14 @@ const CodePlayground = ({
         setTimeout(() => setIsCopied(false), 2000);
     };
 
+    const isRunEnabled = () => {
+        const currentFile = files[activeTab];
+        return enableRun?.[currentFile.language] ?? true;
+    };
+
     const runCode = () => {
+        if (!isRunEnabled()) return;
+
         setOutput([]);
         const originalLog = console.log;
         const outputs = [];
@@ -108,6 +119,8 @@ const CodePlayground = ({
     };
 
     const toggleConsole = () => {
+        if (!isRunEnabled()) return;
+
         if (!showConsole) {
             runCode();
         } else {
@@ -187,14 +200,16 @@ const CodePlayground = ({
                                 <Copy className="size-4" />
                             )}
                         </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={toggleConsole}
-                            className={showConsole ? "bg-muted" : ""}
-                        >
-                            <Terminal className="size-4" />
-                        </Button>
+                        {isRunEnabled() && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={toggleConsole}
+                                className={showConsole ? "bg-muted" : ""}
+                            >
+                                <Terminal className="size-4" />
+                            </Button>
+                        )}
                         <Button
                             variant="ghost"
                             size="sm"
@@ -235,9 +250,15 @@ const CodePlayground = ({
                     >
                         <div className="w-full">
                             <div
-                                className="overflow-auto"
+                                className={`${
+                                    isExpanded
+                                        ? "overflow-auto"
+                                        : "overflow-hidden"
+                                }`}
                                 style={{
-                                    height: isExpanded ? `${codeHeight}px` : 0,
+                                    maxHeight: isExpanded
+                                        ? `${codeHeight}px`
+                                        : 0,
                                     transition: transitionStyle,
                                 }}
                             >
@@ -304,9 +325,13 @@ const CodePlayground = ({
                                 }`}
                             >
                                 <div
-                                    className="overflow-auto"
+                                    className={`${
+                                        isExpanded
+                                            ? "overflow-auto"
+                                            : "overflow-hidden"
+                                    }`}
                                     style={{
-                                        height: isExpanded
+                                        maxHeight: isExpanded
                                             ? `${codeHeight}px`
                                             : 0,
                                         transition: transitionStyle,
