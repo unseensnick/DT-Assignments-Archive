@@ -1,45 +1,14 @@
+// assignment-viewer.jsx
 "use client";
 import CodePlayground from "@/components/code/code-playground";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { courseConfig } from "@/config/courses";
+import {
+    DEFAULT_PLAYGROUND_CONFIG,
+    getTopicConfig,
+} from "@/config/playground-config";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
-
-const DEFAULT_CONFIG = {
-    title: "Assignment Preview",
-    codeHeight: 600,
-    playground: {
-        enabled: true,
-        consoleWidth: 40,
-        animationDuration: 500,
-        animationEasing: "ease-in-out",
-        enableRun: {
-            html: true,
-            css: true,
-            javascript: true,
-        },
-    },
-};
-
-const mergeConfigs = (defaultConfig, topicConfig) => {
-    if (!topicConfig) return defaultConfig;
-
-    return {
-        ...defaultConfig,
-        ...topicConfig,
-        playground: topicConfig.playground
-            ? {
-                  ...defaultConfig.playground,
-                  ...topicConfig.playground,
-                  // Ensure enableRun is properly merged
-                  enableRun: {
-                      ...defaultConfig.playground?.enableRun,
-                      ...topicConfig.playground?.enableRun,
-                  },
-              }
-            : defaultConfig.playground,
-    };
-};
 
 const AssignmentViewer = ({
     courseSlug,
@@ -58,13 +27,13 @@ const AssignmentViewer = ({
     const basePath = `tipsy-troll/${topicSlug}`;
 
     // Get configuration for this topic
-    const moduleConfig = courseConfig[courseSlug]?.modules[moduleSlug];
-    const sectionConfig = moduleConfig?.sections[sectionSlug];
-    const defaultViewerConfig = sectionConfig?.viewerConfig || DEFAULT_CONFIG;
-    const topicConfig = sectionConfig?.topicConfigs?.[topicSlug];
-
-    // Merge configurations properly
-    const viewerConfig = mergeConfigs(defaultViewerConfig, topicConfig);
+    const playgroundConfig =
+        getTopicConfig(courseConfig, {
+            course: courseSlug,
+            module: moduleSlug,
+            section: sectionSlug,
+            topic: topicSlug,
+        }) || DEFAULT_PLAYGROUND_CONFIG;
 
     useEffect(() => {
         setMounted(true);
@@ -141,7 +110,7 @@ const AssignmentViewer = ({
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-accent-foreground">
-                                {viewerConfig.title}
+                                {playgroundConfig.title}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
@@ -150,7 +119,7 @@ const AssignmentViewer = ({
                                 <div
                                     className="rounded-lg border overflow-hidden bg-background"
                                     style={{
-                                        height: `${viewerConfig.previewHeight}px`,
+                                        height: `${playgroundConfig.previewHeight}px`,
                                     }}
                                 >
                                     <iframe
@@ -181,25 +150,12 @@ const AssignmentViewer = ({
 
                                 {/* Code Playground */}
                                 <CodePlayground
+                                    config={{
+                                        ...playgroundConfig,
+                                        initialExpanded:
+                                            playgroundConfig.codeExpanded,
+                                    }}
                                     files={files}
-                                    codeHeight={viewerConfig.codeHeight}
-                                    consoleWidth={
-                                        viewerConfig.playground?.consoleWidth
-                                    }
-                                    animationDuration={
-                                        viewerConfig.playground
-                                            ?.animationDuration
-                                    }
-                                    animationEasing={
-                                        viewerConfig.playground?.animationEasing
-                                    }
-                                    enableRun={
-                                        viewerConfig.playground?.enableRun
-                                    }
-                                    initialExpanded={
-                                        viewerConfig.htmlExpanded ||
-                                        viewerConfig.cssExpanded
-                                    }
                                 />
                             </div>
                         </CardContent>

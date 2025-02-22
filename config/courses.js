@@ -6,6 +6,7 @@ export const courseConfig = {
             consoleWidth: 30,
             animationDuration: 500,
             animationEasing: "ease-in-out",
+            codeExpanded: true,
             enableRun: {
                 html: false,
                 css: false,
@@ -74,6 +75,7 @@ export const courseConfig = {
                             playground: {
                                 enabled: true,
                                 consoleWidth: 40,
+                                codeExpanded: true,
                                 animationDuration: 500,
                                 animationEasing: "ease-in-out",
                                 enableRun: {
@@ -110,3 +112,34 @@ export const courseConfig = {
         },
     },
 };
+/* 
+// For playground type
+{
+  topics: {
+    datatypes: {
+      isExpanded: true,  // This playground starts expanded
+    }
+  }
+}
+
+// For iframe/viewer type
+{
+  sections: {
+    "tipsy-troll": {
+      viewerConfig: {
+        playground: {
+          codeExpanded: true  // Code editor starts expanded
+        }
+      }
+    }
+  }
+}
+
+// For global settings
+{
+  playgroundConfig: {
+    codeExpanded: true,  // All code editors start expanded
+    // ... other global settings
+  }
+}
+*/

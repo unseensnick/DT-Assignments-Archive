@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DEFAULT_PLAYGROUND_CONFIG } from "@/config/playground-config";
 import {
     CheckCheck,
     ChevronDown,
@@ -11,45 +12,20 @@ import { useTheme } from "next-themes";
 import { Highlight, themes } from "prism-react-renderer";
 import React, { useEffect, useState } from "react";
 
-const DEFAULT_CONFIG = {
-    title: "Code Playground",
-    codeHeight: 600,
-    consoleWidth: 40,
-    isExpanded: false,
-    enableRun: {
-        html: true,
-        css: true,
-        javascript: true,
-    },
-    animation: {
-        duration: 500,
-        easing: "ease-in-out",
-    },
-};
-
-const CodePlayground = ({
-    title = DEFAULT_CONFIG.title,
-    files,
-    codeHeight = DEFAULT_CONFIG.codeHeight,
-    consoleWidth = DEFAULT_CONFIG.consoleWidth,
-    initialExpanded = DEFAULT_CONFIG.isExpanded,
-    enableRun = DEFAULT_CONFIG.enableRun,
-    animationDuration = DEFAULT_CONFIG.animation.duration,
-    animationEasing = DEFAULT_CONFIG.animation.easing,
-}) => {
+const CodePlayground = ({ config = DEFAULT_PLAYGROUND_CONFIG, files }) => {
     const [activeTab, setActiveTab] = useState(0);
     const [output, setOutput] = useState([]);
     const [isCopied, setIsCopied] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [showConsole, setShowConsole] = useState(false);
-    const [isExpanded, setIsExpanded] = useState(initialExpanded);
+    const [isExpanded, setIsExpanded] = useState(config.initialExpanded);
     const { resolvedTheme } = useTheme();
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    const transitionStyle = `all ${animationDuration}ms ${animationEasing}`;
+    const transitionStyle = `all ${config.animation.duration}ms ${config.animation.easing}`;
 
     const copyCode = async () => {
         await navigator.clipboard.writeText(files[activeTab].content);
@@ -59,7 +35,7 @@ const CodePlayground = ({
 
     const isRunEnabled = () => {
         const currentFile = files[activeTab];
-        return enableRun?.[currentFile.language] ?? true;
+        return config.enableRun?.[currentFile.language] ?? true;
     };
 
     const runCode = () => {
@@ -137,7 +113,7 @@ const CodePlayground = ({
         resolvedTheme === "dark" ? themes.nightOwl : themes.github;
 
     const gridTemplateColumns = showConsole
-        ? `${100 - consoleWidth}% ${consoleWidth}%`
+        ? `${100 - config.consoleWidth}% ${config.consoleWidth}%`
         : "100% 0%";
 
     const renderOutput = (item) => {
@@ -190,7 +166,7 @@ const CodePlayground = ({
                     style={{ transition: transitionStyle }}
                 >
                     <CardTitle className="text-accent-foreground capitalize">
-                        {title}
+                        {config.title}
                     </CardTitle>
                     <div className="flex gap-2">
                         <Button variant="ghost" size="sm" onClick={copyCode}>
@@ -257,7 +233,7 @@ const CodePlayground = ({
                                 }`}
                                 style={{
                                     maxHeight: isExpanded
-                                        ? `${codeHeight}px`
+                                        ? `${config.codeHeight}px`
                                         : 0,
                                     transition: transitionStyle,
                                 }}
@@ -332,7 +308,7 @@ const CodePlayground = ({
                                     }`}
                                     style={{
                                         maxHeight: isExpanded
-                                            ? `${codeHeight}px`
+                                            ? `${config.codeHeight}px`
                                             : 0,
                                         transition: transitionStyle,
                                     }}
