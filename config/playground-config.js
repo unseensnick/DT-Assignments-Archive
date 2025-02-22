@@ -6,7 +6,7 @@ export const DEFAULT_PLAYGROUND_CONFIG = {
     previewHeight: 750,
     initialExpanded: false,
     isExpanded: false, // For playground type
-    codeExpanded: false, // For assignment viewer type (replaces htmlExpanded/cssExpanded)
+    codeExpanded: false, // For assignment viewer type
     enableRun: {
         html: true,
         css: true,
