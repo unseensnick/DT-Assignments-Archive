@@ -23,7 +23,7 @@ const CodePlayground = ({
     const [isCopied, setIsCopied] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [showConsole, setShowConsole] = useState(false);
-    const { theme } = useTheme();
+    const { resolvedTheme } = useTheme();
 
     useEffect(() => {
         setMounted(true);
@@ -98,11 +98,13 @@ const CodePlayground = ({
         }
     };
 
-    const currentTheme = mounted
-        ? theme === "dark"
-            ? themes.nightOwl
-            : themes.github
-        : themes.github;
+    // Don't render prism until mounted and theme is resolved
+    if (!mounted || !resolvedTheme) {
+        return null;
+    }
+
+    const currentTheme =
+        resolvedTheme === "dark" ? themes.nightOwl : themes.github;
 
     const gridTemplateColumns = showConsole
         ? `${100 - consoleWidth}% ${consoleWidth}%`
@@ -198,52 +200,50 @@ const CodePlayground = ({
                             transition: `all ${animationDuration}ms ${animationEasing}`,
                         }}
                     >
-                        {mounted && (
-                            <div className="w-full">
-                                <Highlight
-                                    theme={currentTheme}
-                                    code={files[activeTab].content}
-                                    language={files[activeTab].language}
-                                >
-                                    {({
-                                        className,
-                                        style,
-                                        tokens,
-                                        getLineProps,
-                                        getTokenProps,
-                                    }) => (
-                                        <pre
-                                            className={`p-4 overflow-x-auto ${
-                                                mounted && theme === "dark"
-                                                    ? "bg-muted/50"
-                                                    : "bg-muted"
-                                            }`}
-                                            style={style}
-                                        >
-                                            {tokens.map((line, i) => (
-                                                <div
-                                                    key={i}
-                                                    {...getLineProps({ line })}
-                                                    className="leading-relaxed"
-                                                >
-                                                    <span className="text-muted-foreground mr-4">
-                                                        {i + 1}
-                                                    </span>
-                                                    {line.map((token, key) => (
-                                                        <span
-                                                            key={key}
-                                                            {...getTokenProps({
-                                                                token,
-                                                            })}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            ))}
-                                        </pre>
-                                    )}
-                                </Highlight>
-                            </div>
-                        )}
+                        <div className="w-full">
+                            <Highlight
+                                theme={currentTheme}
+                                code={files[activeTab].content}
+                                language={files[activeTab].language}
+                            >
+                                {({
+                                    className,
+                                    style,
+                                    tokens,
+                                    getLineProps,
+                                    getTokenProps,
+                                }) => (
+                                    <pre
+                                        className={`p-4 overflow-x-auto ${
+                                            resolvedTheme === "dark"
+                                                ? "bg-muted/50"
+                                                : "bg-muted"
+                                        }`}
+                                        style={style}
+                                    >
+                                        {tokens.map((line, i) => (
+                                            <div
+                                                key={i}
+                                                {...getLineProps({ line })}
+                                                className="leading-relaxed"
+                                            >
+                                                <span className="text-muted-foreground mr-4">
+                                                    {i + 1}
+                                                </span>
+                                                {line.map((token, key) => (
+                                                    <span
+                                                        key={key}
+                                                        {...getTokenProps({
+                                                            token,
+                                                        })}
+                                                    />
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </pre>
+                                )}
+                            </Highlight>
+                        </div>
 
                         <div
                             className="border-l"
@@ -257,7 +257,7 @@ const CodePlayground = ({
                         >
                             <div
                                 className={`h-full ${
-                                    mounted && theme === "dark"
+                                    resolvedTheme === "dark"
                                         ? "bg-muted/50"
                                         : "bg-muted"
                                 }`}

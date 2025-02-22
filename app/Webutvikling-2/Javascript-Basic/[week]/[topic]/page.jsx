@@ -20,14 +20,16 @@ export async function generateStaticParams() {
 }
 
 export default async function PlaygroundPage({ params }) {
-    const { week, topic } = params;
+    const resolvedParams = await Promise.resolve(params);
+    const week = resolvedParams.week;
+    const topic = resolvedParams.topic;
 
     if (!playgroundConfigs[week]?.[topic]) {
         notFound();
     }
 
     const config = playgroundConfigs[week][topic];
-    const codeFiles = await getCodeFiles("code", {
+    const codeFiles = await getCodeFiles("assignments", {
         folders: config.folders,
     });
 

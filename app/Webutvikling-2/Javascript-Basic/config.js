@@ -1,13 +1,13 @@
 export const playgroundConfigs = {
     "week-1": {
         datatypes: {
-            consoleWidth: 35,
+            consoleWidth: 26,
             animationDuration: 500,
             animationEasing: "ease-in-out",
             folders: ["datatypes"],
         },
         "variables-and-conditionals": {
-            consoleWidth: 40,
+            consoleWidth: 32,
             animationDuration: 500,
             animationEasing: "ease-out",
             folders: ["variables-and-conditionals"],
@@ -15,13 +15,13 @@ export const playgroundConfigs = {
     },
     "week-2": {
         functions: {
-            consoleWidth: 35,
+            consoleWidth: 42,
             animationDuration: 500,
             animationEasing: "ease-in-out",
             folders: ["functions"],
         },
         methods: {
-            consoleWidth: 40,
+            consoleWidth: 38,
             animationDuration: 500,
             animationEasing: "ease-in-out",
             folders: ["methods"],
