@@ -1,4 +1,3 @@
-// playground-config.js
 export const DEFAULT_PLAYGROUND_CONFIG = {
     title: "Code Playground",
     codeHeight: 600,
