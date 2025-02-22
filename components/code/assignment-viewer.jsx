@@ -1,4 +1,3 @@
-// assignment-viewer.jsx
 "use client";
 import CodePlayground from "@/components/code/code-playground";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,15 +15,10 @@ const AssignmentViewer = ({
     sectionSlug,
     topicSlug,
 }) => {
-    const [content, setContent] = useState({
-        html: "",
-        css: "",
-        javascript: "",
-    });
+    const [files, setFiles] = useState([]);
     const [mounted, setMounted] = useState(false);
+    const [activeFile, setActiveFile] = useState(null);
     const { resolvedTheme } = useTheme();
-
-    const basePath = `tipsy-troll/${topicSlug}`;
 
     // Get configuration for this topic
     const playgroundConfig =
@@ -44,64 +38,75 @@ const AssignmentViewer = ({
 
         const fetchAssignmentContent = async () => {
             try {
-                const htmlResponse = await fetch(
-                    `/api/assignments/${basePath}/index.html`
+                // First try to get the directory listing
+                const listResponse = await fetch(
+                    `/api/assignments/files?folders=${topicSlug}`
                 );
-                let htmlContent = "";
-                if (htmlResponse.ok) {
-                    htmlContent = await htmlResponse.text();
+
+                if (!listResponse.ok) {
+                    throw new Error("Failed to fetch file listing");
                 }
 
-                const cssResponse = await fetch(
-                    `/api/assignments/${basePath}/style.css`
-                );
-                let cssContent = "";
-                if (cssResponse.ok) {
-                    cssContent = await cssResponse.text();
+                const fileList = await listResponse.json();
+                const folderFiles = fileList[topicSlug] || {};
+
+                // Transform the files into the format we need
+                let allFiles = [];
+
+                // Process HTML files
+                if (folderFiles.html) {
+                    allFiles.push(
+                        ...folderFiles.html.map((file) => ({
+                            name: file.name,
+                            content: file.content,
+                            language: "html",
+                        }))
+                    );
                 }
 
-                const jsResponse = await fetch(
-                    `/api/assignments/${basePath}/script.js`
-                );
-                let jsContent = "";
-                if (jsResponse.ok) {
-                    jsContent = await jsResponse.text();
+                // Process CSS files
+                if (folderFiles.css) {
+                    allFiles.push(
+                        ...folderFiles.css.map((file) => ({
+                            name: file.name,
+                            content: file.content,
+                            language: "css",
+                        }))
+                    );
                 }
 
-                setContent({
-                    html: htmlContent,
-                    css: cssContent,
-                    javascript: jsContent,
-                });
+                // Process JavaScript files
+                if (folderFiles.javascript) {
+                    allFiles.push(
+                        ...folderFiles.javascript.map((file) => ({
+                            name: file.name,
+                            content: file.content,
+                            language: "javascript",
+                        }))
+                    );
+                }
+
+                setFiles(allFiles);
+
+                // Set the active file to index.html if it exists, otherwise the first HTML file
+                const indexFile = allFiles.find((f) => f.name === "index.html");
+                const firstHtmlFile = allFiles.find(
+                    (f) => f.language === "html"
+                );
+                setActiveFile(indexFile || firstHtmlFile || allFiles[0]);
             } catch (error) {
                 console.error("Error fetching assignment:", error);
             }
         };
 
         fetchAssignmentContent();
-    }, [basePath, topicSlug]);
+    }, [topicSlug]);
 
     if (!mounted || !resolvedTheme) return null;
-    if (!topicSlug) return null;
+    if (!topicSlug || !activeFile) return null;
 
-    // Prepare files for CodePlayground
-    const files = [
-        {
-            name: "index.html",
-            content: content.html,
-            language: "html",
-        },
-        content.css && {
-            name: "style.css",
-            content: content.css,
-            language: "css",
-        },
-        content.javascript && {
-            name: "script.js",
-            content: content.javascript,
-            language: "javascript",
-        },
-    ].filter(Boolean);
+    // Only show files that have content
+    const validFiles = files.filter((file) => file.content);
 
     return (
         <div className="min-h-screen pb-20">
@@ -128,17 +133,25 @@ const AssignmentViewer = ({
                                             <html>
                                                 <head>
                                                     <style>${
-                                                        content.css
+                                                        validFiles.find(
+                                                            (f) =>
+                                                                f.language ===
+                                                                "css"
+                                                        )?.content || ""
                                                     }</style>
-                                                    <base href="/assignments/${basePath}/" />
+                                                    <base href="/assignments/tipsy-troll/${topicSlug}/" />
                                                 </head>
                                                 <body style="margin:0;background:${
                                                     resolvedTheme === "dark"
                                                         ? "#fff"
                                                         : "#fff"
-                                                }">${content.html}</body>
+                                                }">${activeFile.content}</body>
                                                 <script>${
-                                                    content.javascript
+                                                    validFiles.find(
+                                                        (f) =>
+                                                            f.language ===
+                                                            "javascript"
+                                                    )?.content || ""
                                                 }</script>
                                             </html>
                                         `}
@@ -155,7 +168,7 @@ const AssignmentViewer = ({
                                         initialExpanded:
                                             playgroundConfig.codeExpanded,
                                     }}
-                                    files={files}
+                                    files={validFiles}
                                 />
                             </div>
                         </CardContent>

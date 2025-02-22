@@ -1,7 +1,7 @@
-import { getCodeFiles } from "@/lib/script-utils";
+// route.js
+import { promises as fs } from "fs";
 import { NextResponse } from "next/server";
 import path from "path";
-import { promises as fs } from "fs";
 
 export async function GET(request, { params: paramsPromise }) {
     try {
@@ -9,38 +9,60 @@ export async function GET(request, { params: paramsPromise }) {
         const pathSegments = await Promise.resolve(params.path);
         const assignmentPath = pathSegments.join("/");
 
-        // If requesting a specific file (like index.html or style.css)
+        const fullPath = path.join(
+            process.cwd(),
+            "public",
+            "assignments",
+            assignmentPath
+        );
+
+        // If requesting a specific file
         if (assignmentPath.includes(".")) {
-            const filePath = path.join(
-                process.cwd(),
-                "public",
-                "assignments",
-                assignmentPath
-            );
             try {
-                const content = await fs.readFile(filePath, "utf-8");
-                return new NextResponse(content);
+                const content = await fs.readFile(fullPath, "utf-8");
+                return new NextResponse(content, {
+                    headers: {
+                        "Content-Type": "text/plain",
+                    },
+                });
             } catch (error) {
-                return new NextResponse("File not found", { status: 404 });
+                return NextResponse.json(
+                    { error: "File not found" },
+                    { status: 404 }
+                );
             }
         }
 
-        // If requesting folder contents
-        const folderName = path.basename(assignmentPath);
-        const files = await getCodeFiles("assignments", {
-            folders: [folderName],
-        });
+        // If requesting directory contents
+        try {
+            const files = await fs.readdir(fullPath, { withFileTypes: true });
+            const fileList = files
+                .filter((file) => file.isFile())
+                .reduce((acc, file) => {
+                    const ext = path.extname(file.name).slice(1);
+                    const language = ext === "js" ? "javascript" : ext;
 
-        if (!files[folderName]) {
+                    if (!acc[language]) {
+                        acc[language] = [];
+                    }
+
+                    acc[language].push({
+                        name: file.name,
+                        language: language,
+                    });
+
+                    return acc;
+                }, {});
+
+            return NextResponse.json(fileList);
+        } catch (error) {
             return NextResponse.json(
-                { error: "Assignment not found" },
+                { error: "Assignment directory not found" },
                 { status: 404 }
             );
         }
-
-        return NextResponse.json(files[folderName]);
     } catch (error) {
-        console.error("Error fetching assignment:", error);
+        console.error("Error handling request:", error);
         return NextResponse.json(
             { error: "Internal server error" },
             { status: 500 }
