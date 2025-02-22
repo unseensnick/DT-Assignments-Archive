@@ -1,33 +1,51 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCheck, Copy, Terminal } from "lucide-react";
+import {
+    CheckCheck,
+    ChevronDown,
+    ChevronUp,
+    Copy,
+    Terminal,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import { Highlight, themes } from "prism-react-renderer";
 import React, { useEffect, useState } from "react";
 
-const ANIMATION_SETTINGS = {
-    duration: 500,
-    easing: "ease-in-out",
+const DEFAULT_CONFIG = {
+    title: "Code Playground",
+    previewHeight: 600,
+    codeHeight: 600,
     consoleWidth: 40,
+    isExpanded: false,
+    animation: {
+        duration: 500,
+        easing: "ease-in-out",
+    },
 };
 
 const CodePlayground = ({
-    title = "Code Playground",
+    title = DEFAULT_CONFIG.title,
     files,
-    animationDuration = ANIMATION_SETTINGS.duration,
-    animationEasing = ANIMATION_SETTINGS.easing,
-    consoleWidth = ANIMATION_SETTINGS.consoleWidth,
+    previewHeight = DEFAULT_CONFIG.previewHeight,
+    codeHeight = DEFAULT_CONFIG.codeHeight,
+    consoleWidth = DEFAULT_CONFIG.consoleWidth,
+    initialExpanded = DEFAULT_CONFIG.isExpanded,
+    animationDuration = DEFAULT_CONFIG.animation.duration,
+    animationEasing = DEFAULT_CONFIG.animation.easing,
 }) => {
     const [activeTab, setActiveTab] = useState(0);
     const [output, setOutput] = useState([]);
     const [isCopied, setIsCopied] = useState(false);
     const [mounted, setMounted] = useState(false);
     const [showConsole, setShowConsole] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(initialExpanded);
     const { resolvedTheme } = useTheme();
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    const transitionStyle = `all ${animationDuration}ms ${animationEasing}`;
 
     const copyCode = async () => {
         await navigator.clipboard.writeText(files[activeTab].content);
@@ -98,7 +116,6 @@ const CodePlayground = ({
         }
     };
 
-    // Don't render prism until mounted and theme is resolved
     if (!mounted || !resolvedTheme) {
         return null;
     }
@@ -153,7 +170,12 @@ const CodePlayground = ({
     return (
         <div className="space-y-4">
             <Card className="overflow-hidden">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4">
+                <CardHeader
+                    className={`flex flex-row items-center justify-between space-y-0 ${
+                        !isExpanded ? "h-12 py-0" : "p-4"
+                    }`}
+                    style={{ transition: transitionStyle }}
+                >
                     <CardTitle className="text-accent-foreground capitalize">
                         {title}
                     </CardTitle>
@@ -172,6 +194,17 @@ const CodePlayground = ({
                             className={showConsole ? "bg-muted" : ""}
                         >
                             <Terminal className="size-4" />
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setIsExpanded(!isExpanded)}
+                        >
+                            {isExpanded ? (
+                                <ChevronUp className="size-4" />
+                            ) : (
+                                <ChevronDown className="size-4" />
+                            )}
                         </Button>
                     </div>
                 </CardHeader>
@@ -197,58 +230,66 @@ const CodePlayground = ({
                         className="grid"
                         style={{
                             gridTemplateColumns,
-                            transition: `all ${animationDuration}ms ${animationEasing}`,
+                            transition: transitionStyle,
                         }}
                     >
                         <div className="w-full">
-                            <Highlight
-                                theme={currentTheme}
-                                code={files[activeTab].content}
-                                language={files[activeTab].language}
+                            <div
+                                className="overflow-auto"
+                                style={{
+                                    height: isExpanded ? `${codeHeight}px` : 0,
+                                    transition: transitionStyle,
+                                }}
                             >
-                                {({
-                                    className,
-                                    style,
-                                    tokens,
-                                    getLineProps,
-                                    getTokenProps,
-                                }) => (
-                                    <pre
-                                        className={`p-4 overflow-x-auto ${
-                                            resolvedTheme === "dark"
-                                                ? "bg-muted/50"
-                                                : "bg-muted"
-                                        }`}
-                                        style={style}
-                                    >
-                                        {tokens.map((line, i) => (
-                                            <div
-                                                key={i}
-                                                {...getLineProps({ line })}
-                                                className="leading-relaxed"
-                                            >
-                                                <span className="text-muted-foreground mr-4">
-                                                    {i + 1}
-                                                </span>
-                                                {line.map((token, key) => (
-                                                    <span
-                                                        key={key}
-                                                        {...getTokenProps({
-                                                            token,
-                                                        })}
-                                                    />
-                                                ))}
-                                            </div>
-                                        ))}
-                                    </pre>
-                                )}
-                            </Highlight>
+                                <Highlight
+                                    theme={currentTheme}
+                                    code={files[activeTab].content}
+                                    language={files[activeTab].language}
+                                >
+                                    {({
+                                        className,
+                                        style,
+                                        tokens,
+                                        getLineProps,
+                                        getTokenProps,
+                                    }) => (
+                                        <pre
+                                            className={`p-4 ${
+                                                resolvedTheme === "dark"
+                                                    ? "bg-muted/50"
+                                                    : "bg-muted"
+                                            }`}
+                                            style={style}
+                                        >
+                                            {tokens.map((line, i) => (
+                                                <div
+                                                    key={i}
+                                                    {...getLineProps({ line })}
+                                                    className="leading-relaxed"
+                                                >
+                                                    <span className="text-muted-foreground mr-4">
+                                                        {i + 1}
+                                                    </span>
+                                                    {line.map((token, key) => (
+                                                        <span
+                                                            key={key}
+                                                            {...getTokenProps({
+                                                                token,
+                                                            })}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            ))}
+                                        </pre>
+                                    )}
+                                </Highlight>
+                            </div>
                         </div>
 
                         <div
                             className="border-l"
                             style={{
-                                transition: `all ${animationDuration}ms ${animationEasing}`,
+                                transition: transitionStyle,
                                 opacity: showConsole ? 1 : 0,
                                 transform: `translateX(${
                                     showConsole ? 0 : 100
@@ -262,22 +303,32 @@ const CodePlayground = ({
                                         : "bg-muted"
                                 }`}
                             >
-                                <div className="p-4">
-                                    <h3 className="text-sm font-semibold mb-2 text-muted-foreground">
-                                        Output
-                                    </h3>
-                                    <div className="font-mono text-sm space-y-2">
-                                        {output.length > 0 ? (
-                                            output.map((item, index) => (
-                                                <div key={index}>
-                                                    {renderOutput(item)}
+                                <div
+                                    className="overflow-auto"
+                                    style={{
+                                        height: isExpanded
+                                            ? `${codeHeight}px`
+                                            : 0,
+                                        transition: transitionStyle,
+                                    }}
+                                >
+                                    <div className="p-4">
+                                        <h3 className="text-sm font-semibold mb-2 text-muted-foreground">
+                                            Output
+                                        </h3>
+                                        <div className="font-mono text-sm space-y-2">
+                                            {output.length > 0 ? (
+                                                output.map((item, index) => (
+                                                    <div key={index}>
+                                                        {renderOutput(item)}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div className="text-muted-foreground">
+                                                    Run code to see output
                                                 </div>
-                                            ))
-                                        ) : (
-                                            <div className="text-muted-foreground">
-                                                Run code to see output
-                                            </div>
-                                        )}
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
