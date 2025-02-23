@@ -27,9 +27,10 @@ export const courseConfig = {
                                 },
                                 folders: ["datatypes"],
                             },
-                            "variables-and-conditionals": {
+                            "variables-conditionals": {
                                 consoleWidth: 32,
                                 animationEasing: "ease-out",
+                                title: "Variables and Conditionals",
                                 enableRun: {
                                     html: true,
                                 },
@@ -53,6 +54,9 @@ export const courseConfig = {
                         topics: {
                             loops: {
                                 folders: ["loops"],
+                            },
+                            "objects-loops": {
+                                folders: ["objects-loops"],
                             },
                         },
                     },
