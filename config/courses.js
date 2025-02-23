@@ -98,17 +98,11 @@ export const courseConfig = {
                             "04.1-html-links-images",
                             "04.2-css-grid",
                         ],
-                        topicConfigs: {
+                        /* topicConfigs: {
                             "03.2-css-flexbox": {
                                 title: "Flexbox Exercise",
                             },
-                            "04.1-html-links-images": {
-                                title: "04.1-html-links-images",
-                            },
-                            "04.2-css-grid": {
-                                title: "CSS Grid Exercise",
-                            },
-                        },
+                        }, */
                     },
                 },
             },
