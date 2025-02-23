@@ -29,8 +29,6 @@ export const courseConfig = {
                             },
                             "variables-conditionals": {
                                 consoleWidth: 32,
-                                animationEasing: "ease-out",
-                                title: "Variables and Conditionals",
                                 enableRun: {
                                     html: true,
                                 },
@@ -60,6 +58,12 @@ export const courseConfig = {
                             },
                         },
                     },
+                    "week-4": {
+                        topics: {},
+                    },
+                    "bonus-assignments": {
+                        topics: {},
+                    },
                 },
             },
         },
@@ -71,8 +75,8 @@ export const courseConfig = {
                 title: "Web1 HTML & JavaScript",
                 type: "iframe",
                 sections: {
-                    "tipsy-troll": {
-                        title: "Tipsy Troll",
+                    "html-theory": {
+                        title: "HTML Theory",
                         viewerConfig: {
                             previewHeight: 750,
                             codeHeight: 600,
@@ -101,6 +105,7 @@ export const courseConfig = {
                             "03.2-css-flexbox",
                             "04.1-html-links-images",
                             "04.2-css-grid",
+                            "05-html-forms-input",
                         ],
                         /* topicConfigs: {
                             "03.2-css-flexbox": {
@@ -108,7 +113,186 @@ export const courseConfig = {
                             },
                         }, */
                     },
+                    "html-project": {
+                        title: "HTML Project",
+                        viewerConfig: {
+                            previewHeight: 750,
+                            codeHeight: 600,
+                            playground: {
+                                enabled: true,
+                                consoleWidth: 40,
+                                codeExpanded: true,
+                                animationDuration: 500,
+                                animationEasing: "ease-in-out",
+                                enableRun: {
+                                    html: false,
+                                    css: false,
+                                    javascript: true,
+                                },
+                            },
+                            animation: {
+                                duration: 500,
+                                easing: "ease-in-out",
+                            },
+                        },
+                        topics: ["01-dev-process", "02-tipsy-troll-assignment"],
+                    },
+                    "javascript-theory": {
+                        title: "Javascript Theory",
+                        viewerConfig: {
+                            previewHeight: 750,
+                            codeHeight: 600,
+                            playground: {
+                                enabled: true,
+                                consoleWidth: 40,
+                                codeExpanded: true,
+                                animationDuration: 500,
+                                animationEasing: "ease-in-out",
+                                enableRun: {
+                                    html: false,
+                                    css: false,
+                                    javascript: true,
+                                },
+                            },
+                            animation: {
+                                duration: 500,
+                                easing: "ease-in-out",
+                            },
+                        },
+                        topics: [
+                            "01-js-variables",
+                            "02-js-datatypes",
+                            "03-js-if-statements",
+                            "04-js-operators",
+                            "05-js-functions",
+                        ],
+                    },
+                    "javascript-project": {
+                        title: "JavaScript Project",
+                        viewerConfig: {
+                            previewHeight: 750,
+                            codeHeight: 600,
+                            playground: {
+                                enabled: true,
+                                consoleWidth: 40,
+                                codeExpanded: true,
+                                animationDuration: 500,
+                                animationEasing: "ease-in-out",
+                                enableRun: {
+                                    html: false,
+                                    css: false,
+                                    javascript: true,
+                                },
+                            },
+                            animation: {
+                                duration: 500,
+                                easing: "ease-in-out",
+                            },
+                        },
+                        topics: [
+                            "01-project-process",
+                            "02-potion-recipe-assignment",
+                            "03-web1-evaluation",
+                        ],
+                    },
                 },
+            },
+            "web2-javascript": {
+                title: "Web2 JavaScript",
+                type: "iframe",
+                sections: {
+                    "data-structure": {
+                        title: "Data Structure",
+                        viewerConfig: {
+                            previewHeight: 750,
+                            codeHeight: 600,
+                            playground: {
+                                enabled: true,
+                                consoleWidth: 40,
+                                codeExpanded: true,
+                                animationDuration: 500,
+                                animationEasing: "ease-in-out",
+                                enableRun: {
+                                    html: false,
+                                    css: false,
+                                    javascript: true,
+                                },
+                            },
+                            animation: {
+                                duration: 500,
+                                easing: "ease-in-out",
+                            },
+                        },
+                        topics: [
+                            "01-js-array",
+                            "02-js-loops",
+                            "03-js-events",
+                            "04-js-dom-manipulation-reading",
+                            "05-js-dom-manipulation-modifying",
+                        ],
+                    },
+                    project: {
+                        title: "Project",
+                        viewerConfig: {
+                            previewHeight: 750,
+                            codeHeight: 600,
+                            playground: {
+                                enabled: true,
+                                consoleWidth: 40,
+                                codeExpanded: true,
+                                animationDuration: 500,
+                                animationEasing: "ease-in-out",
+                                enableRun: {
+                                    html: false,
+                                    css: false,
+                                    javascript: true,
+                                },
+                            },
+                            animation: {
+                                duration: 500,
+                                easing: "ease-in-out",
+                            },
+                        },
+                        topics: [
+                            "01-arra-objects",
+                            "02-rpg-quest-log-assignment",
+                        ],
+                    },
+                    "object-oriented-theory": {
+                        title: "Object-Oriented Theory",
+                        viewerConfig: {
+                            previewHeight: 750,
+                            codeHeight: 600,
+                            playground: {
+                                enabled: true,
+                                consoleWidth: 40,
+                                codeExpanded: true,
+                                animationDuration: 500,
+                                animationEasing: "ease-in-out",
+                                enableRun: {
+                                    html: false,
+                                    css: false,
+                                    javascript: true,
+                                },
+                            },
+                            animation: {
+                                duration: 500,
+                                easing: "ease-in-out",
+                            },
+                        },
+                        topics: [
+                            "01-js-multi-dimensional-arrays",
+                            "02-js-advanced-functions",
+                            "03-js-if-statements",
+                            "04-js-object-oriented programming",
+                        ],
+                    },
+                },
+            },
+            "web3-project": {
+                title: "Web3 Project",
+                type: "iframe",
+                sections: {},
             },
         },
     },
