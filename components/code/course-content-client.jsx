@@ -40,7 +40,6 @@ function ModuleCard({
               0
           );
 
-    // Get module completion rate
     const moduleStatus = moduleStatuses?.[courseKey]?.[moduleKey] || {
         completionRate: 0,
     };
@@ -149,10 +148,19 @@ function ModuleCard({
                         Progress
                     </span>
                     <span className="text-sm font-medium">
-                        {completionRate}%
+                        {moduleStatuses ? (
+                            `${completionRate}%`
+                        ) : (
+                            <span className="text-muted-foreground animate-pulse">
+                                Checking...
+                            </span>
+                        )}
                     </span>
                 </div>
-                <Progress value={completionRate} className="h-2" />
+                <Progress
+                    value={moduleStatuses ? completionRate : null}
+                    className={`h-2 ${!moduleStatuses && "animate-pulse"}`}
+                />
             </div>
         </div>
     );
@@ -161,7 +169,6 @@ function ModuleCard({
 export default function CourseContent({ courseKey, courseData }) {
     const [fileStats, setFileStats] = useState(null);
     const [moduleStatuses, setModuleStatuses] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -174,8 +181,6 @@ export default function CourseContent({ courseKey, courseData }) {
                 setModuleStatuses(statuses);
             } catch (error) {
                 console.error("Error fetching stats:", error);
-            } finally {
-                setIsLoading(false);
             }
         };
         fetchStats();
@@ -208,19 +213,6 @@ export default function CourseContent({ courseKey, courseData }) {
         },
         0
     );
-
-    if (isLoading) {
-        return (
-            <div className="h-full flex items-center justify-center">
-                <div className="text-muted-foreground">Loading...</div>
-            </div>
-        );
-    }
-
-    // Calculate course completion rate
-    const courseCompletionRate = moduleStatuses
-        ? Math.round(getCourseCompletionRate(moduleStatuses, courseKey))
-        : 0;
 
     return (
         <div className="h-full overflow-y-auto">
@@ -276,7 +268,18 @@ export default function CourseContent({ courseKey, courseData }) {
                                 <span>Completion</span>
                             </div>
                             <div className="text-2xl font-semibold">
-                                {courseCompletionRate}%
+                                {moduleStatuses ? (
+                                    `${Math.round(
+                                        getCourseCompletionRate(
+                                            moduleStatuses,
+                                            courseKey
+                                        )
+                                    )}%`
+                                ) : (
+                                    <span className="animate-pulse">
+                                        Calculating...
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </div>

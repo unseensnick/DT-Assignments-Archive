@@ -25,12 +25,6 @@ function CourseCard({ courseKey, courseData, moduleStatuses }) {
         ? "bg-blue-100"
         : "bg-purple-100";
 
-    const isComplete = isModuleComplete(
-        moduleStatuses,
-        courseKey,
-        latestModuleKey
-    );
-
     return (
         <a href={`/${courseKey}`} className="group">
             <div className="bg-card rounded-xl border p-6 hover:shadow-lg transition-all duration-300">
@@ -75,15 +69,31 @@ function CourseCard({ courseKey, courseData, moduleStatuses }) {
                             <span className="text-sm text-muted-foreground">
                                 {latestModule.title}
                             </span>
-                            <span
-                                className={`text-xs ${
-                                    isComplete
-                                        ? "bg-green-100 text-green-800"
-                                        : "bg-yellow-100 text-yellow-800"
-                                } px-2 py-1 rounded`}
-                            >
-                                {isComplete ? "Complete" : "Incomplete"}
-                            </span>
+                            {moduleStatuses ? (
+                                <span
+                                    className={`text-xs ${
+                                        isModuleComplete(
+                                            moduleStatuses,
+                                            courseKey,
+                                            latestModuleKey
+                                        )
+                                            ? "bg-green-100 text-green-800"
+                                            : "bg-yellow-100 text-yellow-800"
+                                    } px-2 py-1 rounded`}
+                                >
+                                    {isModuleComplete(
+                                        moduleStatuses,
+                                        courseKey,
+                                        latestModuleKey
+                                    )
+                                        ? "Complete"
+                                        : "Incomplete"}
+                                </span>
+                            ) : (
+                                <span className="text-xs bg-slate-100 text-slate-800 px-2 py-1 rounded animate-pulse">
+                                    Checking...
+                                </span>
+                            )}
                         </div>
                     </div>
                 )}
@@ -95,7 +105,6 @@ function CourseCard({ courseKey, courseData, moduleStatuses }) {
 export default function Home() {
     const [fileStats, setFileStats] = useState(null);
     const [moduleStatuses, setModuleStatuses] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -103,13 +112,10 @@ export default function Home() {
                 const files = await getCodeFiles();
                 setFileStats(files);
 
-                // Get completion status for all modules
                 const statuses = await getModuleCompletionStatus(courseConfig);
                 setModuleStatuses(statuses);
             } catch (error) {
                 console.error("Error fetching stats:", error);
-            } finally {
-                setIsLoading(false);
             }
         };
         fetchStats();
@@ -125,17 +131,6 @@ export default function Home() {
         (acc, course) => acc + getAssignmentCounts(course),
         0
     );
-
-    if (isLoading) {
-        return (
-            <div className="h-full flex items-center justify-center">
-                <div className="text-muted-foreground">Loading...</div>
-            </div>
-        );
-    }
-
-    // Calculate completion rate only after loading is complete
-    const completionRate = Math.round(getOverallCompletionRate(moduleStatuses));
 
     return (
         <div className="h-full overflow-y-auto">
@@ -196,7 +191,17 @@ export default function Home() {
                                     Completion Rate
                                 </div>
                                 <div className="text-2xl font-semibold text-yellow-600">
-                                    {completionRate}%
+                                    {moduleStatuses ? (
+                                        `${Math.round(
+                                            getOverallCompletionRate(
+                                                moduleStatuses
+                                            )
+                                        )}%`
+                                    ) : (
+                                        <span className="animate-pulse">
+                                            Calculating...
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
