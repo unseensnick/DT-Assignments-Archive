@@ -1,6 +1,13 @@
 "use client";
 
 import { Progress } from "@/components/ui/progress";
+import { courseConfig } from "@/config/courses";
+import {
+    getAssignmentCounts,
+    getCourseCompletionRate,
+    getModuleCompletionStatus,
+    isModuleComplete,
+} from "@/lib/completion-utils";
 import { getCodeFiles } from "@/lib/script-utils";
 import {
     AlertCircle,
@@ -12,7 +19,13 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-function ModuleCard({ moduleKey, moduleData, courseKey, type = "playground" }) {
+function ModuleCard({
+    moduleKey,
+    moduleData,
+    courseKey,
+    type = "playground",
+    moduleStatuses,
+}) {
     const isPlayground = type === "playground";
     const weeks = moduleData.weeks || {};
     const sections = moduleData.sections || {};
@@ -26,6 +39,12 @@ function ModuleCard({ moduleKey, moduleData, courseKey, type = "playground" }) {
               (acc, section) => acc + (section.topics?.length || 0),
               0
           );
+
+    // Get module completion rate
+    const moduleStatus = moduleStatuses?.[courseKey]?.[moduleKey] || {
+        completionRate: 0,
+    };
+    const completionRate = Math.round(moduleStatus.completionRate);
 
     return (
         <div className="bg-card rounded-xl border p-6">
@@ -77,7 +96,7 @@ function ModuleCard({ moduleKey, moduleData, courseKey, type = "playground" }) {
                                               <div className="flex items-center justify-between">
                                                   <span className="font-medium">
                                                       {topicKey.replace(
-                                                          "-",
+                                                          /-/g,
                                                           " "
                                                       )}
                                                   </span>
@@ -129,9 +148,11 @@ function ModuleCard({ moduleKey, moduleData, courseKey, type = "playground" }) {
                     <span className="text-sm text-muted-foreground">
                         Progress
                     </span>
-                    <span className="text-sm font-medium">100%</span>
+                    <span className="text-sm font-medium">
+                        {completionRate}%
+                    </span>
                 </div>
-                <Progress value={100} className="h-2" />
+                <Progress value={completionRate} className="h-2" />
             </div>
         </div>
     );
@@ -139,11 +160,23 @@ function ModuleCard({ moduleKey, moduleData, courseKey, type = "playground" }) {
 
 export default function CourseContent({ courseKey, courseData }) {
     const [fileStats, setFileStats] = useState(null);
+    const [moduleStatuses, setModuleStatuses] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
-            const files = await getCodeFiles();
-            setFileStats(files);
+            try {
+                const files = await getCodeFiles();
+                setFileStats(files);
+
+                // Get completion status for all modules
+                const statuses = await getModuleCompletionStatus(courseConfig);
+                setModuleStatuses(statuses);
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+            } finally {
+                setIsLoading(false);
+            }
         };
         fetchStats();
     }, []);
@@ -176,6 +209,19 @@ export default function CourseContent({ courseKey, courseData }) {
         0
     );
 
+    if (isLoading) {
+        return (
+            <div className="h-full flex items-center justify-center">
+                <div className="text-muted-foreground">Loading...</div>
+            </div>
+        );
+    }
+
+    // Calculate course completion rate
+    const courseCompletionRate = moduleStatuses
+        ? Math.round(getCourseCompletionRate(moduleStatuses, courseKey))
+        : 0;
+
     return (
         <div className="h-full overflow-y-auto">
             <div className="container py-6 space-y-8 mx-auto">
@@ -199,6 +245,7 @@ export default function CourseContent({ courseKey, courseData }) {
                                     moduleData={moduleData}
                                     courseKey={courseKey}
                                     type={moduleData.type}
+                                    moduleStatuses={moduleStatuses}
                                 />
                             )
                         )}
@@ -221,6 +268,15 @@ export default function CourseContent({ courseKey, courseData }) {
                             </div>
                             <div className="text-2xl font-semibold">
                                 {totalAssignments}
+                            </div>
+                        </div>
+                        <div className="p-4 bg-card rounded-lg border">
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                                <Layout size={16} />
+                                <span>Completion</span>
+                            </div>
+                            <div className="text-2xl font-semibold">
+                                {courseCompletionRate}%
                             </div>
                         </div>
                     </div>

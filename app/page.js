@@ -1,35 +1,21 @@
 "use client";
 
 import { courseConfig } from "@/config/courses";
+import {
+    getAssignmentCounts,
+    getModuleCompletionStatus,
+    getOverallCompletionRate,
+    isModuleComplete,
+} from "@/lib/completion-utils";
 import { getCodeFiles } from "@/lib/script-utils";
 import { AlertCircle, Book, Code, Layout } from "lucide-react";
 import { useEffect, useState } from "react";
 
-function getAssignmentCounts(course) {
-    let totalAssignments = 0;
-
-    if (course.modules) {
-        Object.values(course.modules).forEach((module) => {
-            if (module.weeks) {
-                Object.values(module.weeks).forEach((week) => {
-                    totalAssignments += Object.keys(week.topics || {}).length;
-                });
-            }
-            if (module.sections) {
-                Object.values(module.sections).forEach((section) => {
-                    totalAssignments += section.topics?.length || 0;
-                });
-            }
-        });
-    }
-
-    return totalAssignments;
-}
-
-function CourseCard({ courseKey, courseData }) {
+function CourseCard({ courseKey, courseData, moduleStatuses }) {
     const totalModules = Object.keys(courseData.modules || {}).length;
     const totalAssignments = getAssignmentCounts(courseData);
     const latestModule = Object.values(courseData.modules || {})[0];
+    const latestModuleKey = Object.keys(courseData.modules || {})[0];
 
     const IconComponent = courseKey.includes("javascript") ? Code : Layout;
     const colorClass = courseKey.includes("javascript")
@@ -38,6 +24,12 @@ function CourseCard({ courseKey, courseData }) {
     const bgColorClass = courseKey.includes("javascript")
         ? "bg-blue-100"
         : "bg-purple-100";
+
+    const isComplete = isModuleComplete(
+        moduleStatuses,
+        courseKey,
+        latestModuleKey
+    );
 
     return (
         <a href={`/${courseKey}`} className="group">
@@ -83,8 +75,14 @@ function CourseCard({ courseKey, courseData }) {
                             <span className="text-sm text-muted-foreground">
                                 {latestModule.title}
                             </span>
-                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
-                                Complete
+                            <span
+                                className={`text-xs ${
+                                    isComplete
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-yellow-100 text-yellow-800"
+                                } px-2 py-1 rounded`}
+                            >
+                                {isComplete ? "Complete" : "Incomplete"}
                             </span>
                         </div>
                     </div>
@@ -96,15 +94,28 @@ function CourseCard({ courseKey, courseData }) {
 
 export default function Home() {
     const [fileStats, setFileStats] = useState(null);
+    const [moduleStatuses, setModuleStatuses] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
-            const files = await getCodeFiles();
-            setFileStats(files);
+            try {
+                const files = await getCodeFiles();
+                setFileStats(files);
+
+                // Get completion status for all modules
+                const statuses = await getModuleCompletionStatus(courseConfig);
+                setModuleStatuses(statuses);
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+            } finally {
+                setIsLoading(false);
+            }
         };
         fetchStats();
     }, []);
 
+    // Calculate static values that don't depend on moduleStatuses
     const totalCourses = Object.keys(courseConfig).length;
     const totalModules = Object.values(courseConfig).reduce(
         (acc, course) => acc + Object.keys(course.modules || {}).length,
@@ -114,6 +125,17 @@ export default function Home() {
         (acc, course) => acc + getAssignmentCounts(course),
         0
     );
+
+    if (isLoading) {
+        return (
+            <div className="h-full flex items-center justify-center">
+                <div className="text-muted-foreground">Loading...</div>
+            </div>
+        );
+    }
+
+    // Calculate completion rate only after loading is complete
+    const completionRate = Math.round(getOverallCompletionRate(moduleStatuses));
 
     return (
         <div className="h-full overflow-y-auto">
@@ -135,6 +157,7 @@ export default function Home() {
                                 key={key}
                                 courseKey={key}
                                 courseData={course}
+                                moduleStatuses={moduleStatuses}
                             />
                         ))}
                     </div>
@@ -173,7 +196,7 @@ export default function Home() {
                                     Completion Rate
                                 </div>
                                 <div className="text-2xl font-semibold text-yellow-600">
-                                    100%
+                                    {completionRate}%
                                 </div>
                             </div>
                         </div>
