@@ -13,7 +13,7 @@ Task:
 /****************************************************************************** 
 2. Updating an Object
 
-Task:  
+Task:    
 - Update the object from Task 1:  
     - Set yearPublished to 2024  
     - Set isOnSteam to false  
