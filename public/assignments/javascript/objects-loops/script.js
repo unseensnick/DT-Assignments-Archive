@@ -27,7 +27,7 @@ Task:
 /****************************************************************************** 
 3. Object Arrays (List of People)
 
-Task:  
+Task:   
 - Create an array of 5 objects representing people, each with:  
     - name (string)  
     - age (number)  
