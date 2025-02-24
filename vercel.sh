@@ -10,4 +10,4 @@ if [[ "$commit_message" == *"build"* ]]; then
 else
   echo "No 'build' in the commit message. Skipping the build..."
   exit 1  # Prevent the build
-fi
+fi 
