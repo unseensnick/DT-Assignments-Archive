@@ -59,7 +59,11 @@ export const courseConfig = {
                         },
                     },
                     "week-4": {
-                        topics: {},
+                        topics: {
+                            "code-along": {
+                                folders: ["code-along"],
+                            },
+                        },
                     },
                     "bonus-assignments": {
                         topics: {},
