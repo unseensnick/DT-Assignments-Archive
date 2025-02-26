@@ -1,0 +1,38 @@
+*{ 
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #adadad;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.container, .list-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid rgb(185, 184, 184);
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.302);
+}
+
+button {
+    margin: 10px;
+    padding: 10px 18px;
+    border: none;
+    background-color: royalblue;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover{
+    background-color: darkblue;
+}
+
+.item {
+    cursor: pointer;
+}
