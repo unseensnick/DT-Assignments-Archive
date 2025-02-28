@@ -116,6 +116,9 @@ const CodePlayground = ({ config = DEFAULT_PLAYGROUND_CONFIG, files }) => {
         ? `${100 - config.consoleWidth}% ${config.consoleWidth}%`
         : "100% 0%";
 
+    // Get the custom code title or fall back to defaults
+    const codeTitle = config.codeTitle || config.title || "Code Playground";
+
     const renderOutput = (item) => {
         switch (item.type) {
             case "html":
@@ -166,7 +169,7 @@ const CodePlayground = ({ config = DEFAULT_PLAYGROUND_CONFIG, files }) => {
                     style={{ transition: transitionStyle }}
                 >
                     <CardTitle className="text-accent-foreground capitalize">
-                        {config.title}
+                        {codeTitle}
                     </CardTitle>
                     <div className="flex gap-2">
                         <Button variant="ghost" size="sm" onClick={copyCode}>

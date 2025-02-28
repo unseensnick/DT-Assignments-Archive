@@ -25,14 +25,20 @@ export const courseConfig = {
                                 enableRun: {
                                     html: true,
                                 },
+                                // Use the actual folder names as they appear in the filesystem
                                 folders: ["datatypes"],
+                                previewTitle: "JavaScript Data Types Preview",
+                                codeTitle: "Data Types Examples"
                             },
                             "variables-conditionals": {
                                 consoleWidth: 32,
                                 enableRun: {
                                     html: true,
                                 },
+                                // Use the actual folder name which is "variables-and-conditionals"
                                 folders: ["variables-and-conditionals"],
+                                previewTitle: "Variables & Conditionals Preview",
+                                codeTitle: "Variables & Conditionals Examples"
                             },
                         },
                     },
@@ -41,10 +47,14 @@ export const courseConfig = {
                             functions: {
                                 consoleWidth: 42,
                                 folders: ["functions"],
+                                previewTitle: "JavaScript Functions Preview",
+                                codeTitle: "Function Examples"
                             },
                             methods: {
                                 consoleWidth: 38,
                                 folders: ["methods"],
+                                previewTitle: "JavaScript Methods Preview",
+                                codeTitle: "Method Examples"
                             },
                         },
                     },
@@ -52,16 +62,45 @@ export const courseConfig = {
                         topics: {
                             loops: {
                                 folders: ["loops"],
+                                previewTitle: "JavaScript Loops Preview",
+                                codeTitle: "Loop Examples"
                             },
                             "objects-loops": {
                                 folders: ["objects-loops"],
+                                previewTitle: "Objects & Loops Preview",
+                                codeTitle: "Object & Loop Examples"
                             },
                         },
                     },
                     "week-4": {
                         topics: {
                             "code-along": {
+                                // Change from playground type to iframe type
+                                type: "iframe",  
+                                viewerConfig: {
+                                    previewHeight: 750,
+                                    codeHeight: 600,
+                                    playground: {
+                                        enabled: true,
+                                        consoleWidth: 40,
+                                        codeExpanded: true,
+                                        animationDuration: 500,
+                                        animationEasing: "ease-in-out",
+                                        enableRun: {
+                                            html: true,
+                                            css: true,
+                                            javascript: true,
+                                        },
+                                    },
+                                    animation: {
+                                        duration: 500,
+                                        easing: "ease-in-out",
+                                    },
+                                },
+                                // Files are in the code-along folder
                                 folders: ["code-along"],
+                                previewTitle: "Interactive Demo",
+                                codeTitle: "Code Along Exercise"
                             },
                         },
                     },

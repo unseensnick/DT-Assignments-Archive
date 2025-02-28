@@ -42,6 +42,12 @@ function validateParams(searchParams) {
     if (moduleConfig.type === "playground") {
         const topicConfig = moduleConfig.weeks[section]?.topics[topic];
         if (!topicConfig) return null;
+
+        // Check if the topic has its own type specified
+        if (topicConfig.type === "iframe") {
+            return { type: "iframe", config: topicConfig };
+        }
+
         return { type: "playground", config: topicConfig };
     }
 

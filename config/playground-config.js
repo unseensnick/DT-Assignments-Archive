@@ -1,5 +1,7 @@
 export const DEFAULT_PLAYGROUND_CONFIG = {
     title: "Code Playground",
+    previewTitle: "Preview",
+    codeTitle: "Code Playground",
     codeHeight: 600,
     consoleWidth: 40,
     previewHeight: 750,
@@ -34,6 +36,15 @@ export function createPlaygroundConfig(customConfig = {}) {
     // Set initialExpanded based on the appropriate expansion setting
     mergedConfig.initialExpanded =
         customConfig.isExpanded || customConfig.codeExpanded || false;
+        
+    // Ensure we have fallback titles
+    if (!mergedConfig.previewTitle && customConfig.title) {
+        mergedConfig.previewTitle = customConfig.title + " Preview";
+    }
+    
+    if (!mergedConfig.codeTitle && customConfig.title) {
+        mergedConfig.codeTitle = customConfig.title;
+    }
 
     return mergedConfig;
 }
@@ -80,11 +91,31 @@ export function getTopicConfig(
         const topicConfig = moduleConfig.weeks[section]?.topics[topic];
         if (!topicConfig) return null;
 
+        // Check if topic has its own type (iframe)
+        if (topicConfig.type === "iframe") {
+            // Handle iframe configuration
+            const baseConfig = topicConfig.viewerConfig?.playground || {};
+            
+            // Create a combined config with titles
+            const combinedConfig = {
+                ...baseConfig,
+                previewTitle: topicConfig.previewTitle,
+                codeTitle: topicConfig.codeTitle,
+                title: topicConfig.title || topic.replace(/-/g, " ")
+            };
+            
+            // Merge global config with iframe-specific config
+            return mergePlaygroundConfigs(globalConfig, combinedConfig);
+        }
+
+        // Standard playground behavior
         // Start with global config, then override with topic-specific settings
         return createPlaygroundConfig({
             ...globalConfig,
             ...topicConfig,
-            title: topicConfig.title || topic,
+            title: topicConfig.title || topic.replace(/-/g, " "),
+            previewTitle: topicConfig.previewTitle,
+            codeTitle: topicConfig.codeTitle,
             enableRun: {
                 ...globalConfig.enableRun,
                 ...(topicConfig.enableRun || {}),
@@ -109,9 +140,20 @@ export function getTopicConfig(
         const baseConfig = sectionConfig.viewerConfig?.playground || {};
         const topicConfig =
             sectionConfig.topicConfigs?.[topic]?.playground || {};
+            
+        // Get specific titles from the topic config if available
+        const titles = sectionConfig.topicConfigs?.[topic] || {};
+
+        // Create a config with titles
+        const combinedConfig = {
+            ...topicConfig,
+            previewTitle: titles.previewTitle,
+            codeTitle: titles.codeTitle,
+            title: titles.title || topic.replace(/-/g, " ")
+        };
 
         // Merge in order: global -> section -> topic
-        return mergePlaygroundConfigs(globalConfig, baseConfig, topicConfig);
+        return mergePlaygroundConfigs(globalConfig, baseConfig, combinedConfig);
     }
 
     return null;

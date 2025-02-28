@@ -4,7 +4,7 @@ const description = document.querySelector("#description");
 const buttons = document.getElementsByClassName("Btn");
 const listItems = document.querySelectorAll(".item");
 const inputField = document.getElementById("nameInput");
-const submiteBtn = document.getElementById("submitBtn");
+const submitBtn = document.getElementById("submitBtn");
 const changeColorBtn = document.getElementById("changeColor");
 
 document.getElementById("changeTextBtn").addEventListener("click", () => {
@@ -36,7 +36,7 @@ listItems.forEach((Item, index) => {
     });
 });
 
-submiteBtn.addEventListener("click", () => {
+submitBtn.addEventListener("click", () => {
     alert(`Hello, ${inputField.value}!`);
 });
 

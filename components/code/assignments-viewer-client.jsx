@@ -2,7 +2,7 @@
 
 import AssignmentViewer from "@/components/code/assignment-viewer";
 import PlaygroundClient from "@/components/code/playground-client";
-import { getCodeFiles } from "@/lib/script-utils";
+import { useApiData } from "@/lib/api-data-provider";
 import { useEffect, useState } from "react";
 
 export default function AssignmentsViewerClient({
@@ -13,23 +13,24 @@ export default function AssignmentsViewerClient({
 }) {
     const [codeFiles, setCodeFiles] = useState(null);
     const [error, setError] = useState(null);
+    const { getFilesByFolders, loading } = useApiData();
 
     useEffect(() => {
         if (type === "playground" && folderConfig) {
             const loadFiles = async () => {
                 try {
-                    const files = await getCodeFiles("assignments", {
-                        folders: folderConfig,
-                    });
+                    // Use the context function to get files
+                    const files = await getFilesByFolders(folderConfig);
                     setCodeFiles(files);
                 } catch (err) {
                     console.error("Failed to load files:", err);
                     setError(err.message);
                 }
             };
+
             loadFiles();
         }
-    }, [type, folderConfig]);
+    }, [type, folderConfig, getFilesByFolders]);
 
     if (error) {
         return (
@@ -41,15 +42,17 @@ export default function AssignmentsViewerClient({
         );
     }
 
-    if (type === "playground") {
-        if (!codeFiles) {
-            return (
-                <div className="min-h-screen flex items-center justify-center">
-                    <div className="text-muted-foreground">Loading...</div>
+    if (loading || (type === "playground" && !codeFiles)) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-muted-foreground animate-pulse">
+                    Loading files...
                 </div>
-            );
-        }
+            </div>
+        );
+    }
 
+    if (type === "playground") {
         return (
             <div className="min-h-screen overflow-auto">
                 <div className="w-full p-14 flex flex-col items-center">
@@ -58,6 +61,7 @@ export default function AssignmentsViewerClient({
                             files={codeFiles}
                             playgroundConfig={playgroundConfig}
                             className="w-full"
+                            topicSlug={params?.topic}
                         />
                     </div>
                 </div>

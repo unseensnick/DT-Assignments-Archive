@@ -2,6 +2,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { ApiDataProvider } from "@/lib/api-data-provider";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -33,17 +34,19 @@ export default function RootLayout({ children }) {
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <div className="[--header-height:calc(theme(spacing.14))] h-full flex flex-col">
-                        <SidebarProvider className="flex flex-col flex-1 overflow-hidden">
-                            <SiteHeader />
-                            <div className="flex flex-1 min-h-0 overflow-hidden">
-                                <AppSidebar />
-                                <SidebarInset className="min-h-0 flex-1 overflow-hidden">
-                                    {children}
-                                </SidebarInset>
-                            </div>
-                        </SidebarProvider>
-                    </div>
+                    <ApiDataProvider>
+                        <div className="[--header-height:calc(theme(spacing.14))] h-full flex flex-col">
+                            <SidebarProvider className="flex flex-col flex-1 overflow-hidden">
+                                <SiteHeader />
+                                <div className="flex flex-1 min-h-0 overflow-hidden">
+                                    <AppSidebar />
+                                    <SidebarInset className="min-h-0 flex-1 overflow-hidden">
+                                        {children}
+                                    </SidebarInset>
+                                </div>
+                            </SidebarProvider>
+                        </div>
+                    </ApiDataProvider>
                 </ThemeProvider>
             </body>
         </html>
