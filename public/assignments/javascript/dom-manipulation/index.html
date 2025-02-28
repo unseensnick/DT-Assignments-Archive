@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Interactive Web Experience</title>
+        <script src="./script.js" defer></script>
+        <link rel="stylesheet" href="./style.css" />
+    </head>
+    <body>
+        <div class="header-container">
+            <header class="main-header">
+                <h1 id="page-title">Interactive DOM Playground</h1>
+                <section class="theme-interaction">
+                    <button id="theme-toggle-btn" class="action-btn" aria-label="Toggle dark mode">
+                        <span id="theme-toggle-text">Dark Mode</span>
+                    </button>
+                </section>
+            </header>
+        </div>
+
+        <div class="content-alignment-container">
+            <div class="content-container">
+                <main class="content-area">
+                    <section class="text-interaction">
+                        <p id="dynamic-paragraph">
+                            Placeholder text that will change dynamically
+                        </p>
+                        <button id="text-change-btn" class="action-btn">
+                            Update Text
+                        </button>
+                    </section>
+
+                    <section class="list-interaction">
+                        <h2>Dynamic List</h2>
+                        <ul id="interactive-list">
+                            <li class="list-item">Initial Item 1</li>
+                            <li class="list-item">Initial Item 2</li>
+                            <li class="list-item">Initial Item 3</li>
+                            <li class="list-item">Initial Item 4</li>
+                            <li class="list-item">Initial Item 5</li>
+                            <li class="list-item">Initial Item 6</li>
+                        </ul>
+                        <div class="button-container">
+                            <button id="add-list-item-btn" class="action-btn">
+                                Add Item
+                            </button>
+                            <button id="remove-list-item-btn" class="action-btn">
+                                Remove Item
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="input-interaction">
+                        <label for="user-input">Enter something:</label>
+                        <div class="input-form">
+                            <input
+                                type="text"
+                                id="user-input"
+                                class="text-input"
+                                placeholder="Type here..." />
+                            <button id="submit-input-btn" class="action-btn">
+                                Submit Input
+                            </button>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

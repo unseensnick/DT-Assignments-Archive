@@ -102,6 +102,32 @@ export const courseConfig = {
                                 previewTitle: "Interactive Demo",
                                 codeTitle: "Code Along Exercise"
                             },
+                            "dom-manipulation": {
+                                type: "iframe",  
+                                viewerConfig: {
+                                    previewHeight: 750,
+                                    codeHeight: 600,
+                                    playground: {
+                                        enabled: true,
+                                        consoleWidth: 40,
+                                        codeExpanded: true,
+                                        animationDuration: 500,
+                                        animationEasing: "ease-in-out",
+                                        enableRun: {
+                                            html: true,
+                                            css: true,
+                                            javascript: true,
+                                        },
+                                    },
+                                    animation: {
+                                        duration: 500,
+                                        easing: "ease-in-out",
+                                    },
+                                },
+                                folders: ["dom-manipulation"],
+                                previewTitle: "Interactive Demo",
+                                codeTitle: "Code Along Exercise"
+                            },
                         },
                     },
                     "bonus-assignments": {
