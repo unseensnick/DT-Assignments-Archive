@@ -1,11 +1,11 @@
 /* ==========================================
-   FONT IMPORTS
+   FONT IMPORTS - Using local fallbacks if Google Fonts fails
    ========================================== */
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 /* ==========================================
-            DESIGN SYSTEM & VARIABLES
-            ========================================== */
+               DESIGN SYSTEM & VARIABLES
+               ========================================== */
 @layer base {
     :root {
         --background: 0 0% 100%;
@@ -85,8 +85,8 @@
 }
 
 /* ==========================================
-            ANIMATIONS
-            ========================================== */
+               ANIMATIONS
+               ========================================== */
 @keyframes spin {
     from {
         transform: rotate(0deg);
@@ -106,8 +106,8 @@
 }
 
 /* ==========================================
-            GLOBAL RESET AND BASE STYLING
-            ========================================== */
+               GLOBAL RESET AND BASE STYLING
+               ========================================== */
 *,
 *::before,
 *::after {
@@ -158,8 +158,8 @@ body {
 }
 
 /* ==========================================
-            LAYOUT CONTAINERS
-            ========================================== */
+               LAYOUT CONTAINERS
+               ========================================== */
 .header-container {
     width: 100%;
     padding: 0;
@@ -202,8 +202,8 @@ body {
 }
 
 /* ==========================================
-            THEME INTERACTION
-            ========================================== */
+               THEME INTERACTION
+               ========================================== */
 .theme-interaction {
     display: flex;
     align-items: center;
@@ -223,8 +223,8 @@ body {
 }
 
 /* ==========================================
-            CARD COMPONENTS - BASE STYLES
-            ========================================== */
+               CARD COMPONENTS - BASE STYLES
+               ========================================== */
 .text-interaction,
 .list-interaction,
 .input-interaction,
@@ -255,8 +255,8 @@ body {
 }
 
 /* ==========================================
-            BUTTON STYLES - BASE
-            ========================================== */
+               BUTTON STYLES - BASE
+               ========================================== */
 .action-btn,
 .text-input {
     border-radius: var(--border-radius);
@@ -332,8 +332,8 @@ body {
 }
 
 /* ==========================================
-            BUTTON VARIANTS
-            ========================================== */
+               BUTTON VARIANTS
+               ========================================== */
 .action-btn.primary {
     background-color: hsl(var(--primary));
 }
@@ -372,8 +372,8 @@ body {
 }
 
 /* ==========================================
-            SPECIFIC BUTTON ASSIGNMENTS
-            ========================================== */
+               SPECIFIC BUTTON ASSIGNMENTS
+               ========================================== */
 
 #remove-list-item-btn:disabled,
 #decrement-btn:disabled {
@@ -390,8 +390,8 @@ body {
 }
 
 /* ==========================================
-            TEXT INTERACTION
-            ========================================== */
+               TEXT INTERACTION
+               ========================================== */
 .text-interaction p,
 .text-interaction button {
     width: 100%;
@@ -404,8 +404,8 @@ body {
 }
 
 /* ==========================================
-            LIST INTERACTION
-            ========================================== */
+               LIST INTERACTION
+               ========================================== */
 .list-interaction {
     display: flex;
     flex-direction: column;
@@ -468,8 +468,8 @@ body {
 }
 
 /* ==========================================
-            INPUT INTERACTION
-            ========================================== */
+               INPUT INTERACTION
+               ========================================== */
 .input-interaction {
     display: flex;
     flex-direction: column;
@@ -504,8 +504,8 @@ body {
 }
 
 /* ==========================================
-            COUNTER INTERACTION
-            ========================================== */
+               COUNTER INTERACTION
+               ========================================== */
 .counter-container {
     display: flex;
     flex-direction: column;
@@ -544,8 +544,8 @@ body {
 }
 
 /* ==========================================
-            UTILITY CLASSES
-            ========================================== */
+               UTILITY CLASSES
+               ========================================== */
 .button-container {
     display: flex;
     justify-content: space-evenly;
@@ -553,9 +553,20 @@ body {
     margin-top: 0.5rem;
 }
 
+/* Font fallback for when Google Fonts fails to load */
+@font-face {
+    font-family: "Fira Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: local("Fira Sans Italic"), local("FiraSans-Italic"),
+        local("Arial Italic"), local("Arial-Italic"), local("Helvetica Italic"),
+        local("Helvetica-Italic");
+    font-display: swap;
+}
+
 /* ==========================================
-            RESPONSIVE DESIGN
-            ========================================== */
+               RESPONSIVE DESIGN
+               ========================================== */
 @media (max-width: 768px) {
     html {
         font-size: 15px;
