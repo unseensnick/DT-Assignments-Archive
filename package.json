@@ -1,16 +1,8 @@
 {
-	"name": "interactive-web-experience",
-	"version": "1.0.0",
-	"description": "Interactive DOM Playground",
-	"main": "index.html",
-	"scripts": {
-		"start": "npx serve .",
-		"build": "echo 'Static site, no build required' && exit 0"
-	},
-	"dependencies": {
-		"lucide": "^0.477.0"
-	},
-	"engines": {
-		"node": ">=14.0.0"
-	}
+    "name": "interactive-dom-playground",
+    "version": "0.0.10",
+    "description": "Interactive web experience",
+    "dependencies": {
+        "lucide": "^0.477.0"
+    }
 }
