@@ -467,6 +467,22 @@ body {
     border-bottom: none;
 }
 
+.list-item a {
+    color: hsl(var(--primary));
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.list-item a:hover {
+    color: hsl(var(--primary) / 0.85);
+    text-decoration: underline;
+}
+
+.list-item a:active {
+    color: hsl(var(--primary-foreground) / 0.85);
+}
+
 /* ==========================================
                INPUT INTERACTION
                ========================================== */
