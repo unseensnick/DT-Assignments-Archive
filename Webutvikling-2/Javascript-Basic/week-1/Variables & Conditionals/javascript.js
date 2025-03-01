@@ -1,100 +1,97 @@
 /******************************************************************************
-OPPGAVE 1
+1. Connecting JavaScript to HTML  
 
-Din første oppgave er å koble denne JavaScript-filen til index.html-filen
-ved å bruke en av metodene vi viste i første forelesning.
-
-<-- Finn index.html-filen i filutforskeren og koble den til denne filen,
-javascript.js
+Task: 
+- <-- Locate the index.html file in the file explorer. Connect it to this file (javascript.js). 
 ******************************************************************************/
 
-// Løs denne oppgaven i index.html
+// Complete this task in index.html.
 
 /******************************************************************************
-OPPGAVE 2
+2. Working with Different Data Types  
 
-I forrige undervisning lærte vi hvordan man lager variabler som kan holde ulike
-typer verdier. Lag noen variabler med følgende datatyper:
-- String (tekst)
-- Number (tall)
-- Boolean (sann/usann)
-- Array (liste)
-
-Du kan velge hva innholdet i variablene skal være. Prøv å bruke både let og 
-const når du definerer variablene.
+Task:
+- Create variables using the following data types:  
+	- String (text)  
+	- Number (numeric value)  
+	- Boolean (true/false)  
+	- Array (list)  
+	
+Choose any content for the variables. Use both `let` and `const` when defining them.  
 ******************************************************************************/
 
-// Skriv koden for oppgave 2 her
-let firstName = "John";
+const firstName = "John";
 let age = 18;
 let isAnAdult = age >= 18;
 let cars = ["Toyota", "BMW", "Tesla", "Ford"];
 
-console.log(firstName);
-console.log(age);
-console.log(cars);
-console.log(isAnAdult);
+console.log("--- Task 2: Working with Data Types ---");
+console.log(`Name: "${firstName}" (String)`);
+console.log(`Age: ${age} (Number)`);
+console.log(`Is an adult: ${isAnAdult} (Boolean)`);
+console.log(`Cars owned: [${cars.join(", ")}] (Array)`);
 
 /******************************************************************************
-OPPGAVE 3
+3. Testing Operators  
 
-Prøv ut noen av operatorene vi så på i forrige forelesning:
-- Matematiske operatorer: +, -, /, *
-- Forkortede operatorer: ++, --, +=, -=
-
-Skriv noen eksempler der du tester disse operatorene.
+Task:
+- Try out some of the operators we discussed in the previous lecture:  
+	- Mathematical operators: +, -, /, *  
+	- Increment and decrement operators: ++, --, +=, -=  
+	
+Write some examples where you test these operators.  
 ******************************************************************************/
 
-// Skriv koden for oppgave 3 her
 let a = 10;
 let b = 5;
 
-console.log(a + b);
-console.log(a - b);
-console.log(a * b);
-console.log(a / b);
+console.log("\n--- Task 3: Testing Operators ---");
+console.log(`A = ${a}, B = ${b}`);
+console.log(`Addition (A + B): ${a + b}`);
+console.log(`Subtraction (A - B): ${a - b}`);
+console.log(`Multiplication (A * B): ${a * b}`);
+console.log(`Division (A / B): ${a / b}`);
 
 let x = 5;
 
+console.log(`\nInitial x: ${x}`);
+
 x++;
-console.log(x);
+console.log(`After x++ (increment): ${x}`);
 
 x--;
-console.log(x);
+console.log(`After x-- (decrement): ${x}`);
 
 x += 3;
-console.log(x);
+console.log(`After x += 3: ${x}`);
 
 x -= 2;
-console.log(x);
+console.log(`After x -= 2: ${x}`);
 
 let num = 10;
+console.log(`\nInitial num: ${num}`);
 
 num *= 2;
-console.log(num);
+console.log(`After num *= 2: ${num}`);
 
 num /= 4;
-console.log(num);
+console.log(`After num /= 4: ${num}`);
 
 /******************************************************************************
-OPPGAVE 4
+4. IF/ELSE Condition  
 
-Skriv en IF/ELSE-betingelse som sjekker følgende:
-1. At userName ikke er tom ("").
-2. At userAge er 18 eller eldre.
-3. At userIsBlocked er false.
+Task: 
+- Write an IF/ELSE condition that checks the following:  
+	1. That userName is not empty ("").  
+	2. That userAge is 18 or older.  
+	3. That userIsBlocked is false.  
+	
+(TIP: Use && (logical AND) to check all three conditions in one IF statement.)  
 
-(TIPS: Bruk && (logisk OG) for å sjekke alle tre betingelsene i én IF-setning.)
+- If all these conditions are met, set the variable userIsLoggedIn to true and goToPage to "/home". Then, output a welcome message with console.log.  
+- If any of the conditions are NOT met, output an error message with console.log.  
 
-- Hvis alle disse betingelsene er oppfylt, skal du sette variabelen
-userIsLoggedIn til true og goToPage til "/home". Deretter skriver du ut en 
-velkomstmelding med console.log.
-
-- Hvis noen av betingelsene IKKE er oppfylt, skal du skrive ut en feilmelding
-med console.log.
-
-Prøv å endre verdiene på variablene for å sikre at IF/ELSE-setningen din 
-håndterer alle tilfeller korrekt.
+Try changing the values of the variables to ensure that your IF/ELSE statement handles all cases correctly.
 ******************************************************************************/
 
 let userName = "";
@@ -103,40 +100,44 @@ let userIsLoggedIn = false;
 let userIsBlocked = false;
 let goToPage = "";
 
-// Skriv koden for oppgave 4 her
+console.log("\n--- Task 4: IF/ELSE Condition ---");
+
 if (userName !== "" && userAge >= 18 && userIsBlocked === false) {
     userIsLoggedIn = true;
     goToPage = "/home";
-    console.log(`Velkommen, ${userName}! Du blir sendt til ${goToPage}.`);
+    console.log(
+        `✅ Access Granted! Welcome, "${userName}". Redirecting to: ${goToPage}`
+    );
 } else {
-    console.log("Feil: Brukeren oppfyller ikke kravene for innlogging.");
+    console.log("❌ Access Denied! User does not meet login requirements.");
 }
 
 /******************************************************************************
-OPPGAVE 5
+5. Ternary Conditional  
 
-Lag en variabel kalt userTitle og sett innholdet til å være:
-- "Mr." hvis userMale er true, eller
-- "Mrs." hvis userMale er false.
+Task: 
+- Create a variable called userTitle and set its value to:  
+	- "Mr." if userMale is true, or  
+	- "Mrs." if userMale is false.  
+	
+Use a ternary conditional for this:  
 
-Bruk en ternary conditional for dette:
+const variable = condition ? "if true" : "if false"; 
 
-const variabel = betingelse ? "hvis sann" : "hvis usann";
-
-Prøv å endre userMale til både true og false og bruk console.log for å sjekke
-at betingelsen din fungerer som den skal.
+Try changing userMale to both true and false and use console.log to check that your condition works as expected. 
 ******************************************************************************/
 
 const userMale = false;
 
-// Skriv koden for oppgave 5 her
 const userTitle = userMale ? "Mr." : "Mrs.";
 
-console.log(userTitle);
+console.log("\n--- Task 5: Ternary Conditional ---");
+console.log(`User is male: ${userMale} → Assigned Title: "${userTitle}"`);
 
 function getUserTitle(userMale) {
     return userMale ? "Mr." : "Mrs.";
 }
 
-console.log(getUserTitle(true));
-console.log(getUserTitle(false));
+console.log("\nFunction Testing:");
+console.log(`getUserTitle(true) → "${getUserTitle(true)}"`);
+console.log(`getUserTitle(false) → "${getUserTitle(false)}"`);

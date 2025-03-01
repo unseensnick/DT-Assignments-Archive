@@ -1,4 +1,12 @@
-const print = console.log;
+/******************************************************************************
+1. Oppgaven er å bli kjent med de ulike datatypene.
+
+Task: 
+- Lag 3 string datatyper
+- Lag 2 number datatyper
+- Lag 2 objects som inneholder tre parameter (for eksempel navn, alder, by)
+- Lag 2 array som inneholder 4 parameter (for eksempel frukt, bilmerker eller spill)
+******************************************************************************/
 
 let name = "Ola";
 let city = "Oslo";
@@ -10,53 +18,45 @@ let height = 180;
 let person1 = {
     name: "John",
     age: 28,
-    city: "Oslo"
+    city: "Oslo",
 };
 
 let person2 = {
     name: "Kari",
     age: 30,
-    city: "Bergen"
+    city: "Bergen",
 };
 
 let fruits = ["Eple", "Banan", "Appelsin", "Druer"];
 let cars = ["Toyota", "BMW", "Tesla", "Ford"];
 
-// custom print function
+console.log("--- String Examples ---");
+console.log(`Name: ${name}`);
+console.log(`City: ${city}`);
+console.log(`Hobby: ${hobby}`);
 
-print(name)
-print(city)
-print(hobby)
-print(age)
-print(height)
-print(person1)
-print(person1.name)
-print(person1.age)
-print(person1.city)
-print(person2)
-print(person2.name)
-print(person2.age)
-print(person2.city)
-print(fruits)
-print(cars)
+console.log("\n--- Number Examples ---");
+console.log(`Age: ${age} years`);
+console.log(`Height: ${height} cm`);
 
+console.log("\n--- Object Examples ---");
+console.log("Person 1:");
+console.log(`- Name: ${person1.name}`);
+console.log(`- Age: ${person1.age}`);
+console.log(`- City: ${person1.city}`);
 
-// standard console log
+console.log("\nPerson 2:");
+console.log(`- Name: ${person2.name}`);
+console.log(`- Age: ${person2.age}`);
+console.log(`- City: ${person2.city}`);
 
-/*
-console.log(name);
-console.log(city);
-console.log(hobby);
-console.log(age);
-console.log(height);
-console.log(person1);
-console.log(person1.name);
-console.log(person1.age);
-console.log(person1.city);
-console.log(person2);
-console.log(person2.name);
-console.log(person2.age);
-console.log(person2.city);
-console.log(fruits);
-console.log(cars);
-*/
+console.log("\n--- Array Examples ---");
+console.log("Fruits:");
+fruits.forEach((fruit, index) => {
+    console.log(`${index + 1}. ${fruit}`);
+});
+
+console.log("\nCars:");
+cars.forEach((car, index) => {
+    console.log(`${index + 1}. ${car}`);
+});

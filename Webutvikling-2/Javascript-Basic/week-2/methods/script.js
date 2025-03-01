@@ -1,71 +1,136 @@
-// 1. Count the Characters
-// Create a variable called 'sentence' and assign it a string
-// Then log how many characters are in the string
+/******************************************************************************
+1. Count the Characters
+
+Task:
+- Create a variable `sentence` and assign it a string.
+- Use a string method to print the number of characters in the string.
+******************************************************************************/
+
 let characterCount = "This is a sentence";
-console.log("Number of characters in the sentence: ");
-console.log(characterCount.length);
 
-// 2. Make It Loud!
-// Create a variable with a sentence
-// Convert it to uppercase and log the result
+console.log("--- Task 1: Count the Characters ---");
+console.log(`The sentence is: "${characterCount}"`);
+console.log(`Number of characters in the sentence: ${characterCount.length}`);
+
+/******************************************************************************
+2. Make It Loud!
+
+Task:
+- Store a sentence in a variable.
+- Convert the entire sentence to uppercase and log the result.
+******************************************************************************/
+
 let sentenceToUpperCase = "this is a sentence";
-console.log("\nSentence in uppercase: ");
-console.log(sentenceToUpperCase.toUpperCase());
 
-// 3. Fix the Spacing
-// Create a variable with extra spaces at the start and end
-// Remove the spaces and log the result
+console.log("\n--- Task 2: Make It Loud! ---");
+console.log(`Original sentence: "${sentenceToUpperCase}"`);
+console.log(`Uppercase version: "${sentenceToUpperCase.toUpperCase()}"`);
+
+/******************************************************************************
+3. Fix the Spacing
+
+Task:
+- Create a variable with extra spaces at the start and end.
+- Use a method to remove the spaces and log the result.
+******************************************************************************/
+
 let extraSpaces = "    This is a sentence    ";
-console.log("\nSentence without extra spaces: ");
-console.log(extraSpaces.trim());
 
-// 4. Extract a Word
-// Create a sentence and use .slice() to extract a word
-// Log the extracted word
+console.log("\n--- Task 3: Fix the Spacing ---");
+console.log(`Original sentence: "${extraSpaces}"`);
+console.log(`Trimmed version: "${extraSpaces.trim()}"`);
+
+/******************************************************************************
+4. Extract a Word
+
+Task:
+- Create a sentence, extract a word, and log it.
+******************************************************************************/
+
 let extractWord = "This is a sentence";
-console.log("\nExtracted word: ");
-console.log(extractWord.slice(5, 7));
 
-// 5. Replace a Word
-// Create a sentence and use .replace() to swap words
-// Replace "aWord" with "anotherWord"
+console.log("\n--- Task 4: Extract a Word ---");
+console.log(`Original sentence: "${extractWord}"`);
+console.log(`Extracted word: "${extractWord.slice(5, 7)}"`);
+
+/******************************************************************************
+5. Replace a Word
+
+Task:
+- Create a sentence, replace `"aWord"` with `"anotherWord"`, and print it.
+******************************************************************************/
+
 let replaceWord = "This is a sentence";
-console.log("\nReplaced word: ");
-console.log(replaceWord.replace("a sentence", "another sentence"));
 
-// 6. Split a Sentence
-// Create a sentence and split it into an array of words
-// Remember to choose the right character to split on
+console.log("\n--- Task 5: Replace a Word ---");
+console.log(`Original sentence: "${replaceWord}"`);
+console.log(
+    `Modified sentence: "${replaceWord.replace(
+        "a sentence",
+        "another sentence"
+    )}"`
+);
+
+/******************************************************************************
+6. Split a Sentence
+
+Task:
+- Create a sentence, split it into words, and log the array.
+- Hint: Decide whether to split by whitespace, commas, or another character.
+******************************************************************************/
+
 let splitSentence = "This is a sentence";
-console.log("\nSplit sentence: ");
-console.log(splitSentence.split(" "));
 
-// 7. Add to a List
-// Create an empty array
-// Add 3-4 items using .push()
-// Log the final array
+console.log("\n--- Task 6: Split a Sentence ---");
+console.log(`Original sentence: "${splitSentence}"`);
+console.log("Split into words:", splitSentence.split(" "));
+
+/******************************************************************************
+7. Add to a List
+
+Task:
+- Create an empty array.
+- Add 3-4 items to the array.
+- Log the final array.
+******************************************************************************/
+
 let emptyArray = [];
+
+/* 
 emptyArray.push("item1");
 emptyArray.push("item2");
 emptyArray.push("item3");
 emptyArray.push("item4");
-console.log("\nFinal array: ");
-console.log(emptyArray);
+*/
 
-// 8. Remove the Last Item
-// Create an array with 3-4 items
-// Remove the last item using .pop()
-// Log the new array
+emptyArray.push("item1", "item2", "item3", "item4");
+console.log("\n--- Task 7: Add to a List ---");
+console.log("Final array:", emptyArray);
+
+/******************************************************************************
+8. Remove the Last Item
+
+Task:
+- Create an array with 3-4 items.
+- Remove the last item and log the new array.
+******************************************************************************/
+
 let arrayWithItems = ["item1", "item2", "item3", "item4"];
-arrayWithItems.pop();
-console.log("\nNew array: ");
-console.log(arrayWithItems);
 
-// 9. Find an Item's Position
-// Create an array
-// Find and log the index of two different items
+arrayWithItems.pop();
+
+console.log("\n--- Task 8: Remove the Last Item ---");
+console.log("Updated array after removing last item:", arrayWithItems);
+
+/******************************************************************************
+9. Find an Item’s Position
+
+Task:
+- Create an array, find the index of two of the items, and log them.
+******************************************************************************/
+
 let arrayWithItems2 = ["item1", "item2", "item3", "item4"];
-console.log("\nIndex of item1: ");
-console.log(arrayWithItems2.indexOf("item1"));
-console.log("\nIndex of item3: ");
-console.log(arrayWithItems2.indexOf("item3"));
+
+console.log("\n--- Task 9: Find an Item’s Position ---");
+console.log(`Index of "item1": ${arrayWithItems2.indexOf("item1")}`);
+console.log(`Index of "item3": ${arrayWithItems2.indexOf("item3")}`);
