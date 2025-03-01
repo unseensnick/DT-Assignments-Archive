@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Interactive Web Experience</title>
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
         <script src="./script.js" defer></script>
         <link rel="stylesheet" href="./style.css" />
     </head>
@@ -12,8 +13,12 @@
             <header class="main-header">
                 <h1 id="page-title">Interactive DOM Playground</h1>
                 <section class="theme-interaction">
-                    <button id="theme-toggle-btn" class="action-btn" aria-label="Toggle dark mode">
-                        <span id="theme-toggle-text">Dark Mode</span>
+                    <button
+                        id="theme-toggle-btn"
+                        class="action-btn icon-only"
+                        aria-label="Toggle dark mode"
+                        title="Toggle dark/light mode">
+                        <i data-lucide="moon"></i>
                     </button>
                 </section>
             </header>
@@ -26,7 +31,8 @@
                         <p id="dynamic-paragraph">
                             Placeholder text that will change dynamically
                         </p>
-                        <button id="text-change-btn" class="action-btn">
+                        <button id="text-change-btn" class="action-btn primary spin-on-hover">
+                            <i data-lucide="refresh-cw"></i>
                             Update Text
                         </button>
                     </section>
@@ -42,11 +48,17 @@
                             <li class="list-item">Initial Item 6</li>
                         </ul>
                         <div class="button-container">
-                            <button id="add-list-item-btn" class="action-btn">
+                            <button id="add-list-item-btn" class="action-btn success">
+                                <i data-lucide="plus"></i>
                                 Add Item
                             </button>
-                            <button id="remove-list-item-btn" class="action-btn">
+                            <button id="remove-list-item-btn" class="action-btn danger">
+                                <i data-lucide="minus"></i>
                                 Remove Item
+                            </button>
+                            <button id="reset-btn" class="action-btn reset spin-reverse-on-hover">
+                                <i data-lucide="rotate-ccw"></i>
+                                Reset Page
                             </button>
                         </div>
                     </section>
@@ -59,9 +71,34 @@
                                 id="user-input"
                                 class="text-input"
                                 placeholder="Type here..." />
-                            <button id="submit-input-btn" class="action-btn">
+                            <button id="submit-input-btn" class="action-btn primary">
+                                <i data-lucide="send"></i>
                                 Submit Input
                             </button>
+                        </div>
+                    </section>
+
+                    <section class="counter-interaction">
+                        <h3 class="section-title">Interactive Counter</h3>
+                        <div class="counter-container">
+                            <div class="counter-display">
+                                <span class="counter-value">0</span>
+                            </div>
+                            <div class="counter-controls">
+                                <button id="counter-btn" class="action-btn counter-btn success">
+                                    <i data-lucide="plus"></i>
+                                    Increase
+                                </button>
+                                <button id="decrement-btn" class="action-btn counter-btn danger">
+                                    <i data-lucide="minus"></i>
+                                    Decrease
+                                </button>
+                                <button id="reset-counter-btn"
+                                    class="action-btn counter-btn reset spin-reverse-on-hover">
+                                    <i data-lucide="rotate-ccw"></i>
+                                    Reset
+                                </button>
+                            </div>
                         </div>
                     </section>
                 </main>

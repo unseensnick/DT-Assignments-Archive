@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Week 4: DOM Manipulation</title>
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
         <script src="./Webutvikling-2/Javascript-Basic/week-4/dom-manipulation/script.js"
             defer></script>
         <link rel="stylesheet"
@@ -14,8 +15,12 @@
             <header class="main-header">
                 <h1 id="page-title">Week 4: DOM Manipulation</h1>
                 <section class="theme-interaction">
-                    <button id="theme-toggle-btn" class="action-btn" aria-label="Toggle dark mode">
-                        <span id="theme-toggle-text">Light Mode</span>
+                    <button
+                        id="theme-toggle-btn"
+                        class="action-btn icon-only"
+                        aria-label="Toggle dark mode"
+                        title="Toggle dark/light mode">
+                        <i data-lucide="moon"></i>
                     </button>
                 </section>
             </header>
@@ -40,6 +45,7 @@
                                 href="Webutvikling-2/Javascript-Basic/week-4/dom-manipulation/index.html"
                                 class="action-btn"
                                 id="open-project-btn">
+                                <i data-lucide="folder-open"></i>
                                 Open Project
                             </a>
                         </div>

@@ -4,11 +4,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 /* ==========================================
-      DESIGN SYSTEM & VARIABLES
-      ========================================== */
+            DESIGN SYSTEM & VARIABLES
+            ========================================== */
 @layer base {
     :root {
-        /* Color System */
         --background: 0 0% 100%;
         --foreground: 224 71.4% 4.1%;
         --card: 0 0% 100%;
@@ -28,24 +27,29 @@
         --border: 220 13% 91%;
         --input: 220 13% 91%;
         --ring: 262.1 83.3% 57.8%;
+        --reset: 340 75% 55%;
 
-        /* Chart Colors */
         --chart-1: 12 76% 61%;
         --chart-2: 173 58% 39%;
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
 
-        /* UI Elements */
         --radius: 0.75rem;
         --border-radius: 10px;
         --height: 34px;
         --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+        --button-transition: background-color 0.3s ease, transform 0.2s ease,
+            box-shadow 0.2s ease;
+
+        --grid-color: hsl(var(--primary) / 0.06);
+        --grid-size: 80px;
     }
 
     .dark {
-        /* Dark Mode Colors */
         --background: 224 71.4% 4.1%;
         --foreground: 210 20% 98%;
         --card: 224 71.4% 4.1%;
@@ -66,22 +70,44 @@
         --input: 215 27.9% 16.9%;
         --ring: 263.4 70% 50.4%;
 
-        /* Dark Mode Chart Colors */
         --chart-1: 220 70% 50%;
         --chart-2: 160 60% 45%;
         --chart-3: 30 80% 55%;
         --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
+        --chart-5: 27 88% 67%;
 
-        /* Dark Mode UI Elements */
         --box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.05),
             0 2px 4px -1px rgba(255, 255, 255, 0.03);
+        --hover-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+
+        --grid-color: hsl(var(--primary) / 0.1);
     }
 }
 
 /* ==========================================
-      GLOBAL RESET AND BASE STYLING
-      ========================================== */
+            ANIMATIONS
+            ========================================== */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spin-reverse {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
+/* ==========================================
+            GLOBAL RESET AND BASE STYLING
+            ========================================== */
 *,
 *::before,
 *::after {
@@ -109,8 +135,8 @@ body {
             45deg,
             transparent 0%,
             transparent calc(50% - 0.5px),
-            hsl(var(--primary) / 0.06) calc(50% - 0.5px),
-            hsl(var(--primary) / 0.06) calc(50% + 0.5px),
+            var(--grid-color) calc(50% - 0.5px),
+            var(--grid-color) calc(50% + 0.5px),
             transparent calc(50% + 0.5px),
             transparent 100%
         ),
@@ -118,42 +144,38 @@ body {
             135deg,
             transparent 0%,
             transparent calc(50% - 0.5px),
-            hsl(var(--primary) / 0.06) calc(50% - 0.5px),
-            hsl(var(--primary) / 0.06) calc(50% + 0.5px),
+            var(--grid-color) calc(50% - 0.5px),
+            var(--grid-color) calc(50% + 0.5px),
             transparent calc(50% + 0.5px),
             transparent 100%
         );
-    background-size: 80px 80px;
+    background-size: var(--grid-size) var(--grid-size);
 }
 
-.dark body {
-    background-image: linear-gradient(
-            45deg,
-            transparent 0%,
-            transparent calc(50% - 0.5px),
-            hsl(var(--primary) / 0.1) calc(50% - 0.5px),
-            hsl(var(--primary) / 0.1) calc(50% + 0.5px),
-            transparent calc(50% + 0.5px),
-            transparent 100%
-        ),
-        linear-gradient(
-            135deg,
-            transparent 0%,
-            transparent calc(50% - 0.5px),
-            hsl(var(--primary) / 0.1) calc(50% - 0.5px),
-            hsl(var(--primary) / 0.1) calc(50% + 0.5px),
-            transparent calc(50% + 0.5px),
-            transparent 100%
-        );
+[data-lucide] {
+    display: inline-flex !important;
+    visibility: visible !important;
 }
 
 /* ==========================================
-      LAYOUT CONTAINERS
-      ========================================== */
+            LAYOUT CONTAINERS
+            ========================================== */
 .header-container {
     width: 100%;
     padding: 0;
     border-bottom: 1px solid hsl(var(--border));
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.25rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .content-alignment-container {
@@ -180,26 +202,33 @@ body {
 }
 
 /* ==========================================
-      HEADER STYLING
-      ========================================== */
-.main-header {
+            THEME INTERACTION
+            ========================================== */
+.theme-interaction {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.25rem 1rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    justify-content: center;
+}
+
+#theme-toggle-btn {
+    margin: 0;
+}
+
+#theme-toggle-btn svg {
+    transition: transform 0.3s ease;
+}
+
+#theme-toggle-btn:hover svg {
+    transform: rotate(12deg);
 }
 
 /* ==========================================
-      CARD COMPONENTS
-      ========================================== */
+            CARD COMPONENTS - BASE STYLES
+            ========================================== */
 .text-interaction,
 .list-interaction,
-.input-interaction {
+.input-interaction,
+.counter-interaction {
     background-color: hsl(var(--card));
     color: hsl(var(--card-foreground));
     box-shadow: var(--box-shadow);
@@ -209,14 +238,160 @@ body {
     width: 100%;
 }
 
-.text-interaction {
+.text-interaction,
+.counter-interaction {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0.625rem;
+}
+
+.section-title {
+    margin-bottom: 0.5rem;
+    color: hsl(var(--foreground));
+    font-size: 1.25rem;
+    border-bottom: 1px solid hsl(var(--border));
+    padding-bottom: 0.5rem;
+}
+
+/* ==========================================
+            BUTTON STYLES - BASE
+            ========================================== */
+.action-btn,
+.text-input {
+    border-radius: var(--border-radius);
+    height: var(--height);
+    border: 1px solid hsl(var(--border));
     width: 100%;
 }
 
+.action-btn {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    padding: 0.625rem 0.9375rem;
+    cursor: pointer;
+    transition: var(--button-transition);
+    font-size: 0.875rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.action-btn svg {
+    width: 1rem;
+    height: 1rem;
+    stroke: currentColor;
+    flex-shrink: 0;
+}
+
+.action-btn:hover {
+    background-color: hsl(var(--primary) / 0.9);
+    transform: translateY(-2px);
+    box-shadow: var(--hover-shadow);
+}
+
+.action-btn.icon-only {
+    background-color: transparent;
+    border: 1px solid hsl(var(--border));
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+}
+
+.action-btn.icon-only svg {
+    color: hsl(var(--card-foreground) / 0.6);
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke-width: 2;
+}
+
+.action-btn.icon-only:hover {
+    background-color: hsl(var(--primary) / 0.65);
+}
+
+.action-btn.spin-on-hover:hover svg {
+    animation: spin 1s ease;
+}
+
+.action-btn.spin-reverse-on-hover:hover svg {
+    animation: spin-reverse 1s ease;
+}
+
+.action-btn:disabled {
+    background-color: hsl(var(--muted-foreground) / 0.6);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ==========================================
+            BUTTON VARIANTS
+            ========================================== */
+.action-btn.primary {
+    background-color: hsl(var(--primary));
+}
+
+.action-btn.secondary {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+}
+
+.action-btn.secondary:hover {
+    background-color: hsl(var(--secondary) / 0.85);
+}
+
+.action-btn.success {
+    background-color: hsl(var(--chart-2));
+}
+
+.action-btn.success:hover {
+    background-color: hsl(var(--chart-2) / 0.85);
+}
+
+.action-btn.danger {
+    background-color: hsl(var(--chart-5) / 0.85);
+}
+
+.action-btn.danger:hover {
+    background-color: hsl(var(--chart-5) / 0.75);
+}
+
+.action-btn.reset {
+    background-color: hsl(var(--reset));
+}
+
+.action-btn.reset:hover {
+    background-color: hsl(var(--reset) / 0.85);
+}
+
+/* ==========================================
+            SPECIFIC BUTTON ASSIGNMENTS
+            ========================================== */
+
+#remove-list-item-btn:disabled,
+#decrement-btn:disabled {
+    background-color: hsl(var(--chart-5) / 0.5);
+}
+
+#submit-input-btn {
+    width: fit-content;
+    white-space: nowrap;
+}
+
+#open-project-btn {
+    text-decoration: none;
+}
+
+/* ==========================================
+            TEXT INTERACTION
+            ========================================== */
 .text-interaction p,
 .text-interaction button {
     width: 100%;
@@ -228,6 +403,9 @@ body {
     margin: 0;
 }
 
+/* ==========================================
+            LIST INTERACTION
+            ========================================== */
 .list-interaction {
     display: flex;
     flex-direction: column;
@@ -248,7 +426,6 @@ body {
     border-radius: var(--border-radius);
     padding: 0.875rem 2rem;
     margin-bottom: 0.5rem;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -258,12 +435,11 @@ body {
     padding: 0.5rem 0;
     padding-left: 1.8rem;
     border-bottom: 1px solid hsl(var(--border) / 0.3);
-    transition: background-color 0.1s ease;
     width: 80%;
     text-align: left;
     position: relative;
     list-style-type: none;
-    transition: transform 0.2s ease, color 0.2s ease;
+    transition: transform 0.2s ease, color 0.2s ease, background-color 0.1s ease;
     border-radius: var(--border-radius);
 }
 
@@ -291,6 +467,9 @@ body {
     border-bottom: none;
 }
 
+/* ==========================================
+            INPUT INTERACTION
+            ========================================== */
 .input-interaction {
     display: flex;
     flex-direction: column;
@@ -306,75 +485,10 @@ body {
     gap: 0.5rem;
 }
 
-/* ==========================================
-    FORM ELEMENTS
-      ========================================== */
-.action-btn,
-.text-input {
-    border-radius: var(--border-radius);
-    height: var(--height);
-    border: 1px solid hsl(var(--border));
-    width: 100%;
-}
-
-.action-btn {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    width: auto;
-    padding: 0.625rem 0.9375rem;
-    margin: 0 0.625rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 0.875rem;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.action-btn:hover {
-    background-color: hsl(var(--primary) / 0.9);
-}
-
-#theme-toggle-btn {
-    margin: 0;
-}
-
-#submit-input-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    padding: 0.625rem 0.9375rem;
-    white-space: nowrap;
-}
-
-#add-list-item-btn {
-    background-color: hsl(var(--chart-2));
-}
-
-#remove-list-item-btn {
-    background-color: hsl(var(--chart-5));
-}
-
-#add-list-item-btn:hover {
-    background-color: hsl(var(--chart-2) / 0.9);
-}
-
-#remove-list-item-btn:hover {
-    background-color: hsl(var(--chart-5) / 0.9);
-}
-
-.button-container {
-    display: flex;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
 .text-input {
     padding: 0 0.5rem;
     background-color: hsl(var(--accent));
+    color: hsl(var(--card-foreground));
 }
 
 .text-input::placeholder {
@@ -383,10 +497,65 @@ body {
     opacity: 0.5;
 }
 
-/* ==========================================
-      RESPONSIVE DESIGN
-      ========================================== */
+.text-input:focus {
+    outline: none;
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.5);
+}
 
+/* ==========================================
+            COUNTER INTERACTION
+            ========================================== */
+.counter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.counter-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hsl(var(--secondary));
+    border-radius: var(--border-radius);
+    padding: 1rem 2rem;
+    width: 100%;
+}
+
+.counter-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: hsl(var(--primary));
+}
+
+.counter-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.counter-btn {
+    flex: 1;
+    min-width: 100px;
+    justify-content: center;
+}
+
+/* ==========================================
+            UTILITY CLASSES
+            ========================================== */
+.button-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* ==========================================
+            RESPONSIVE DESIGN
+            ========================================== */
 @media (max-width: 768px) {
     html {
         font-size: 15px;
@@ -401,7 +570,6 @@ body {
     }
 }
 
-/* Mobile (600px and below) */
 @media (max-width: 600px) {
     html {
         font-size: 14px;
@@ -429,6 +597,7 @@ body {
     .action-btn {
         margin: 0;
         width: 100%;
+        justify-content: center;
     }
 
     .button-container {
@@ -439,9 +608,20 @@ body {
     #submit-input-btn {
         width: 100%;
     }
+
+    .counter-controls {
+        flex-direction: column;
+    }
+
+    .counter-btn {
+        width: 100%;
+    }
+
+    .counter-value {
+        font-size: 2rem;
+    }
 }
 
-/* Small Mobile (400px and below) */
 @media (max-width: 400px) {
     .text-interaction,
     .list-interaction,
