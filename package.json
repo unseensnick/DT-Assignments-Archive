@@ -4,5 +4,8 @@
     "description": "Interactive web experience",
     "dependencies": {
         "lucide": "^0.477.0"
+    },
+    "scripts": {
+        "start": "serve -s ."
     }
 }
