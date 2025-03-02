@@ -14,6 +14,9 @@ lucide.createIcons({
         "folder-open": true,
         "rotate-ccw": true,
         "arrow-up-1-0": true,
+        "chevron-down": true,
+        "chevron-up": true,
+        dot: true,
     },
 });
 
@@ -128,6 +131,21 @@ function setupInteractiveElements() {
     const originalListContent = interactiveList.cloneNode(true);
     removeListItemBtn.disabled = false;
 
+    function updateListIcons() {
+        document.querySelectorAll(".list-item").forEach((item) => {
+            if (!item.querySelector(".list-bullet-icon")) {
+                const iconElement = document.createElement("i");
+                iconElement.setAttribute("data-lucide", "dot");
+                iconElement.classList.add("list-bullet-icon");
+
+                item.insertBefore(iconElement, item.firstChild);
+            }
+        });
+        lucide.createIcons();
+    }
+
+    updateListIcons();
+
     if (addListItemBtn && interactiveList) {
         addListItemBtn.addEventListener("click", () => {
             const newItem = document.createElement("li");
@@ -135,6 +153,8 @@ function setupInteractiveElements() {
             newItem.textContent =
                 "New Item " + (interactiveList.children.length + 1);
             interactiveList.appendChild(newItem);
+
+            updateListIcons();
 
             if (interactiveList.children.length > 0) {
                 removeListItemBtn.disabled = false;
@@ -172,14 +192,69 @@ function setupInteractiveElements() {
         const options = dropdown.querySelectorAll(".menu li");
         const selected = dropdown.querySelector(".selected");
 
+        const caretDiv = select.querySelector(".caret");
+        if (caretDiv) {
+            const caretIcon = document.createElement("i");
+            caretIcon.setAttribute("data-lucide", "chevron-down");
+            caretIcon.classList.add("caret-icon");
+            caretDiv.innerHTML = "";
+            caretDiv.appendChild(caretIcon);
+            lucide.createIcons();
+        }
+
         select.addEventListener("click", () => {
-            select.classList.toggle("open");
-            menu.classList.toggle("open");
+            const isCurrentlyOpen = select.classList.contains("open");
+            const caretIcon = select.querySelector(".caret-icon");
+
+            if (caretIcon) {
+                caretIcon.classList.add("chevron-animating");
+
+                if (isCurrentlyOpen) {
+                    setTimeout(() => {
+                        caretIcon.setAttribute("data-lucide", "chevron-down");
+                        lucide.createIcons({
+                            icons: {
+                                "chevron-down": true,
+                            },
+                        });
+
+                        select.classList.remove("open");
+                        menu.classList.remove("open");
+                    }, 150);
+                } else {
+                    select.classList.add("open");
+                    menu.classList.add("open");
+
+                    setTimeout(() => {
+                        caretIcon.setAttribute("data-lucide", "chevron-up");
+                        lucide.createIcons({
+                            icons: {
+                                "chevron-up": true,
+                            },
+                        });
+                    }, 150);
+                }
+
+                setTimeout(() => {
+                    caretIcon.classList.remove("chevron-animating");
+                }, 300);
+            } else {
+                select.classList.toggle("open");
+                menu.classList.toggle("open");
+            }
         });
 
         options.forEach((option) => {
+            if (!option.querySelector(".menu-item-icon")) {
+                const menuIcon = document.createElement("i");
+                menuIcon.setAttribute("data-lucide", "dot");
+                menuIcon.classList.add("menu-item-icon");
+                option.insertBefore(menuIcon, option.firstChild);
+                lucide.createIcons();
+            }
+
             option.addEventListener("click", () => {
-                selected.textContent = option.textContent;
+                selected.textContent = option.textContent.trim();
 
                 options.forEach((opt) => {
                     opt.classList.remove("active");
@@ -187,15 +262,62 @@ function setupInteractiveElements() {
 
                 option.classList.add("active");
 
-                select.classList.remove("open");
-                menu.classList.remove("open");
+                const caretIcon = select.querySelector(".caret-icon");
+                if (caretIcon) {
+                    caretIcon.classList.add("chevron-animating");
+
+                    setTimeout(() => {
+                        caretIcon.setAttribute("data-lucide", "chevron-down");
+                        lucide.createIcons({
+                            icons: {
+                                "chevron-down": true,
+                            },
+                        });
+
+                        select.classList.remove("open");
+                        menu.classList.remove("open");
+                    }, 150);
+
+                    setTimeout(() => {
+                        caretIcon.classList.remove("chevron-animating");
+                    }, 300);
+                } else {
+                    select.classList.remove("open");
+                    menu.classList.remove("open");
+                }
             });
         });
 
         document.addEventListener("click", (e) => {
             if (!dropdown.contains(e.target)) {
-                select.classList.remove("open");
-                menu.classList.remove("open");
+                if (select.classList.contains("open")) {
+                    const caretIcon = select.querySelector(".caret-icon");
+                    if (caretIcon) {
+                        caretIcon.classList.add("chevron-animating");
+
+                        setTimeout(() => {
+                            caretIcon.setAttribute(
+                                "data-lucide",
+                                "chevron-down"
+                            );
+                            lucide.createIcons({
+                                icons: {
+                                    "chevron-down": true,
+                                },
+                            });
+
+                            select.classList.remove("open");
+                            menu.classList.remove("open");
+                        }, 150);
+
+                        setTimeout(() => {
+                            caretIcon.classList.remove("chevron-animating");
+                        }, 300);
+                    } else {
+                        select.classList.remove("open");
+                        menu.classList.remove("open");
+                    }
+                }
             }
         });
     }
@@ -217,6 +339,8 @@ function setupInteractiveElements() {
                 while (freshListCopy.firstChild) {
                     interactiveList.appendChild(freshListCopy.firstChild);
                 }
+
+                updateListIcons();
             }
 
             if (userInput) {
@@ -247,7 +371,7 @@ function setupInteractiveElements() {
                 });
 
                 options[0].classList.add("active");
-                selected.textContent = options[0].textContent;
+                selected.textContent = options[0].textContent.trim();
             });
         });
     }

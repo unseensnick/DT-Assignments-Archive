@@ -67,6 +67,7 @@
         --radius: 0.75rem;
         --border-radius: 10px;
         --height: 34px;
+        --dot-stroke-width: 0.875rem;
         --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
             0 2px 4px -1px rgba(0, 0, 0, 0.06);
         --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -135,6 +136,36 @@
     }
     to {
         transform: rotate(-360deg);
+    }
+}
+
+@keyframes chevron-flip-down {
+    0% {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: rotate(90deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate(180deg);
+        opacity: 1;
+    }
+}
+
+@keyframes chevron-flip-up {
+    0% {
+        transform: rotate(180deg);
+        opacity: 1;
+    }
+    50% {
+        transform: rotate(90deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate(0deg);
+        opacity: 1;
     }
 }
 
@@ -522,7 +553,7 @@ body {
 
 .list-item {
     padding: 0.5rem 0;
-    padding-left: 1.8rem;
+    padding-left: 0.5rem;
     border-bottom: 1px solid hsl(var(--border) / 0.3);
     width: 80%;
     text-align: left;
@@ -530,16 +561,18 @@ body {
     list-style-type: none;
     transition: transform 0.2s ease, color 0.2s ease, background-color 0.1s ease;
     border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
 }
 
-.list-item::before {
-    content: "•";
+.list-bullet-icon {
     color: hsl(var(--primary));
-    position: absolute;
-    left: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-right: 0.5rem;
     transition: transform 0.2s ease, color 0.2s ease;
+    width: 0.5rem;
+    height: 0.5rem;
+    stroke-width: var(--dot-stroke-width);
+    flex-shrink: 0;
 }
 
 .list-item:hover {
@@ -547,9 +580,9 @@ body {
     transform: translateY(-2px);
 }
 
-.list-item:hover::before {
+.list-item:hover .list-bullet-icon {
     color: hsl(var(--primary) / 0.9);
-    transform: translateY(-50%) scale(1.2);
+    transform: scale(1.2);
 }
 
 .list-item:last-child {
@@ -699,16 +732,16 @@ body {
 }
 
 .dropdown .select .caret {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 6px solid hsl(var(--primary));
-    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: hsl(var(--primary));
 }
 
-.dropdown .select.open .caret {
-    transform: rotate(180deg);
+.dropdown .select .caret-icon {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.3s ease;
 }
 
 .dropdown .menu {
@@ -743,6 +776,22 @@ body {
     transition: background-color 0.2s ease;
     border-bottom: 1px solid hsl(var(--border) / 0.3);
     position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item-icon {
+    color: hsl(var(--primary));
+    margin-right: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    stroke-width: var(--dot-stroke-width);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.dropdown .menu li.active .menu-item-icon {
+    opacity: 1;
 }
 
 .dropdown .menu li:last-child {
@@ -756,13 +805,16 @@ body {
 .dropdown .menu li.active {
     color: hsl(var(--primary));
     font-weight: 500;
+    display: flex;
+    align-items: center;
 }
 
-.dropdown .menu li.active::before {
-    content: "•";
-    color: hsl(var(--primary));
-    position: absolute;
-    left: 0.5rem;
+.dropdown .select.open .caret-icon[data-lucide="chevron-up"] {
+    animation: chevron-flip-down 0.2s ease forwards;
+}
+
+.dropdown .select:not(.open) .caret-icon[data-lucide="chevron-down"] {
+    animation: chevron-flip-up 0.2s ease forwards;
 }
 
 /* ==========================================================================
