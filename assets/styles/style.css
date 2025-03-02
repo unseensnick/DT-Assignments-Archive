@@ -1,11 +1,34 @@
-/* ==========================================
-   FONT IMPORTS - Using local fallbacks if Google Fonts fails
-   ========================================== */
+/* ==========================================================================
+   TABLE OF CONTENTS:
+   1. Font Imports
+   2. Design System & Variables
+   3. Animations
+   4. Global Reset & Base Styling
+   5. Custom Scrollbars
+   6. Layout Containers
+   7. Theme Interaction
+   8. Component Base Styles
+   9. Button Styles - Base
+      9.1. Button Variants
+      9.2. Specific Button Assignments
+   10. Text Interaction
+   11. List Interaction
+   12. Input Interaction
+   13. Counter Interaction
+   14. Dropdown Interaction
+   15. Utility Classes
+   16. Font Fallbacks
+   17. Responsive Design
+   ========================================================================== */
+
+/* ==========================================================================
+   1. FONT IMPORTS
+   ========================================================================== */
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-/* ==========================================
-               DESIGN SYSTEM & VARIABLES
-               ========================================== */
+/* ==========================================================================
+      2. DESIGN SYSTEM & VARIABLES
+      ========================================================================== */
 @layer base {
     :root {
         --background: 0 0% 100%;
@@ -34,6 +57,12 @@
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
+
+        --scrollbar-track: 220 13% 95%;
+        --scrollbar-thumb: 220 13% 65%;
+        --scrollbar-thumb-hover: 220 13% 55%;
+        --scrollbar-width: 8px;
+        --scrollbar-dropdown-width: 6px;
 
         --radius: 0.75rem;
         --border-radius: 10px;
@@ -76,6 +105,10 @@
         --chart-4: 280 65% 60%;
         --chart-5: 27 88% 67%;
 
+        --scrollbar-track: 215 27.9% 10%;
+        --scrollbar-thumb: 215 27.9% 25%;
+        --scrollbar-thumb-hover: 215 27.9% 35%;
+
         --box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.05),
             0 2px 4px -1px rgba(255, 255, 255, 0.03);
         --hover-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
@@ -84,9 +117,9 @@
     }
 }
 
-/* ==========================================
-               ANIMATIONS
-               ========================================== */
+/* ==========================================================================
+      3. ANIMATIONS
+      ========================================================================== */
 @keyframes spin {
     from {
         transform: rotate(0deg);
@@ -105,9 +138,9 @@
     }
 }
 
-/* ==========================================
-               GLOBAL RESET AND BASE STYLING
-               ========================================== */
+/* ==========================================================================
+      4. GLOBAL RESET & BASE STYLING
+      ========================================================================== */
 *,
 *::before,
 *::after {
@@ -157,9 +190,66 @@ body {
     visibility: visible !important;
 }
 
-/* ==========================================
-               LAYOUT CONTAINERS
-               ========================================== */
+/* ==========================================================================
+      5. CUSTOM SCROLLBARS
+      ========================================================================== */
+::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+    height: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+    background-color: hsl(var(--scrollbar-track));
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--scrollbar-thumb));
+    border-radius: 100%;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--scrollbar-thumb-hover));
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: hsl(var(--primary) / 0.7);
+}
+
+.dropdown .menu::-webkit-scrollbar {
+    width: var(--scrollbar-dropdown-width);
+    height: var(--scrollbar-dropdown-width);
+}
+
+.dropdown .menu::-webkit-scrollbar-track {
+    background-color: hsl(var(--card));
+    margin: 4px;
+}
+
+.dropdown .menu::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--scrollbar-thumb));
+    border-radius: 100%;
+}
+
+.dropdown .menu::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--scrollbar-thumb-hover));
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--scrollbar-thumb)) hsl(var(--scrollbar-track));
+}
+
+.dropdown .menu {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--scrollbar-thumb)) hsl(var(--card));
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+      6. LAYOUT CONTAINERS
+      ========================================================================== */
 .header-container {
     width: 100%;
     padding: 0;
@@ -201,9 +291,9 @@ body {
     width: 100%;
 }
 
-/* ==========================================
-               THEME INTERACTION
-               ========================================== */
+/* ==========================================================================
+      7. THEME INTERACTION
+      ========================================================================== */
 .theme-interaction {
     display: flex;
     align-items: center;
@@ -222,9 +312,9 @@ body {
     transform: rotate(12deg);
 }
 
-/* ==========================================
-               CARD COMPONENTS - BASE STYLES
-               ========================================== */
+/* ==========================================================================
+      8. COMPONENT BASE STYLES
+      ========================================================================== */
 .text-interaction,
 .list-interaction,
 .input-interaction,
@@ -254,9 +344,9 @@ body {
     padding-bottom: 0.5rem;
 }
 
-/* ==========================================
-               BUTTON STYLES - BASE
-               ========================================== */
+/* ==========================================================================
+      9. BUTTON STYLES - BASE
+      ========================================================================== */
 .action-btn,
 .text-input {
     border-radius: var(--border-radius);
@@ -331,9 +421,9 @@ body {
     box-shadow: none;
 }
 
-/* ==========================================
-               BUTTON VARIANTS
-               ========================================== */
+/* ==========================================================================
+      9.1. BUTTON STYLES - VARIANTS
+      ========================================================================== */
 .action-btn.primary {
     background-color: hsl(var(--primary));
 }
@@ -371,10 +461,9 @@ body {
     background-color: hsl(var(--reset) / 0.85);
 }
 
-/* ==========================================
-               SPECIFIC BUTTON ASSIGNMENTS
-               ========================================== */
-
+/* ==========================================================================
+      9.2. BUTTON STYLES - SPECIFIC ASSIGNMENTS
+      ========================================================================== */
 #remove-list-item-btn:disabled,
 #decrement-btn:disabled {
     background-color: hsl(var(--chart-5) / 0.5);
@@ -389,9 +478,9 @@ body {
     text-decoration: none;
 }
 
-/* ==========================================
-               TEXT INTERACTION
-               ========================================== */
+/* ==========================================================================
+      10. TEXT INTERACTION
+      ========================================================================== */
 .text-interaction p,
 .text-interaction button {
     width: 100%;
@@ -403,9 +492,9 @@ body {
     margin: 0;
 }
 
-/* ==========================================
-               LIST INTERACTION
-               ========================================== */
+/* ==========================================================================
+      11. LIST INTERACTION
+      ========================================================================== */
 .list-interaction {
     display: flex;
     flex-direction: column;
@@ -483,9 +572,9 @@ body {
     color: hsl(var(--primary-foreground) / 0.85);
 }
 
-/* ==========================================
-               INPUT INTERACTION
-               ========================================== */
+/* ==========================================================================
+      12. INPUT INTERACTION
+      ========================================================================== */
 .input-interaction {
     display: flex;
     flex-direction: column;
@@ -519,9 +608,9 @@ body {
     box-shadow: 0 0 0 1px hsl(var(--primary) / 0.5);
 }
 
-/* ==========================================
-               COUNTER INTERACTION
-               ========================================== */
+/* ==========================================================================
+      13. COUNTER INTERACTION
+      ========================================================================== */
 .counter-container {
     display: flex;
     flex-direction: column;
@@ -559,9 +648,126 @@ body {
     justify-content: center;
 }
 
-/* ==========================================
-               UTILITY CLASSES
-               ========================================== */
+/* ==========================================================================
+      14. DROPDOWN INTERACTION
+      ========================================================================== */
+.dropdown-interaction {
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    border: 1px solid hsl(var(--border));
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.dropdown-interaction h3 {
+    margin-bottom: 0.5rem;
+    color: hsl(var(--foreground));
+    font-size: 1.25rem;
+    border-bottom: 1px solid hsl(var(--border));
+    padding-bottom: 0.5rem;
+}
+
+.dropdown {
+    position: relative;
+    width: 100%;
+    user-select: none;
+}
+
+.dropdown .select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    padding: 0.625rem 0.9375rem;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    border: 1px solid hsl(var(--border));
+    height: var(--height);
+    transition: var(--button-transition);
+}
+
+.dropdown .select:hover {
+    background-color: hsl(var(--secondary) / 0.85);
+    transform: translateY(-2px);
+    box-shadow: var(--hover-shadow);
+}
+
+.dropdown .select .caret {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid hsl(var(--primary));
+    transition: transform 0.3s ease;
+}
+
+.dropdown .select.open .caret {
+    transform: rotate(180deg);
+}
+
+.dropdown .menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    background-color: hsl(var(--card));
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    border: 1px solid hsl(var(--border));
+    padding: 0;
+    list-style: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown .menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown .menu li {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid hsl(var(--border) / 0.3);
+    position: relative;
+}
+
+.dropdown .menu li:last-child {
+    border-bottom: none;
+}
+
+.dropdown .menu li:hover {
+    background-color: hsl(var(--primary) / 0.1);
+}
+
+.dropdown .menu li.active {
+    color: hsl(var(--primary));
+    font-weight: 500;
+}
+
+.dropdown .menu li.active::before {
+    content: "•";
+    color: hsl(var(--primary));
+    position: absolute;
+    left: 0.5rem;
+}
+
+/* ==========================================================================
+      15. UTILITY CLASSES
+      ========================================================================== */
 .button-container {
     display: flex;
     justify-content: space-evenly;
@@ -569,7 +775,9 @@ body {
     margin-top: 0.5rem;
 }
 
-/* Font fallback for when Google Fonts fails to load */
+/* ==========================================================================
+      16. FONT FALLBACKS
+      ========================================================================== */
 @font-face {
     font-family: "Fira Sans";
     font-style: italic;
@@ -580,9 +788,9 @@ body {
     font-display: swap;
 }
 
-/* ==========================================
-               RESPONSIVE DESIGN
-               ========================================== */
+/* ==========================================================================
+      17. RESPONSIVE DESIGN
+      ========================================================================== */
 @media (max-width: 768px) {
     html {
         font-size: 15px;
@@ -619,6 +827,14 @@ body {
 
     .input-form {
         flex-direction: column;
+    }
+
+    .dropdown .select {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .dropdown .menu li {
+        padding: 0.625rem 0.875rem;
     }
 
     .action-btn {

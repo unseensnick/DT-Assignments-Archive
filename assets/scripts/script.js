@@ -165,8 +165,43 @@ function setupInteractiveElements() {
         });
     }
 
+    const dropdown = document.querySelector(".dropdown");
+    if (dropdown) {
+        const select = dropdown.querySelector(".select");
+        const menu = dropdown.querySelector(".menu");
+        const options = dropdown.querySelectorAll(".menu li");
+        const selected = dropdown.querySelector(".selected");
+
+        select.addEventListener("click", () => {
+            select.classList.toggle("open");
+            menu.classList.toggle("open");
+        });
+
+        options.forEach((option) => {
+            option.addEventListener("click", () => {
+                selected.textContent = option.textContent;
+
+                options.forEach((opt) => {
+                    opt.classList.remove("active");
+                });
+
+                option.classList.add("active");
+
+                select.classList.remove("open");
+                menu.classList.remove("open");
+            });
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!dropdown.contains(e.target)) {
+                select.classList.remove("open");
+                menu.classList.remove("open");
+            }
+        });
+    }
+
     const resetBtn = document.getElementById("reset-btn");
-    if (resetBtn) {
+    if (resetBtn && dropdown) {
         resetBtn.addEventListener("click", () => {
             if (dynamicParagraph) {
                 dynamicParagraph.textContent = originalParagraphText;
@@ -200,6 +235,20 @@ function setupInteractiveElements() {
             if (interactiveList.children.length > 0) {
                 removeListItemBtn.disabled = false;
             }
+
+            const originalOption =
+                dropdown.querySelector(".menu li.active").textContent;
+            const selected = dropdown.querySelector(".selected");
+
+            resetBtn.addEventListener("click", () => {
+                const options = dropdown.querySelectorAll(".menu li");
+                options.forEach((opt) => {
+                    opt.classList.remove("active");
+                });
+
+                options[0].classList.add("active");
+                selected.textContent = options[0].textContent;
+            });
         });
     }
 
